@@ -36,8 +36,7 @@ Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings
 
 ## Resume
 
-[/assets/NLP engineer_Jeonghyeok Park.pdf](/assets/NLP engineer_Jeonghyeok Park.pdf)
+![/assets/NLP engineer_Jeonghyeok Park.pdf](/assets/NLP engineer_Jeonghyeok Park.pdf)
 
 English 
 Chiense
- 
