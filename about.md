@@ -21,4 +21,23 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 
 ![alt text]({{ site.baseurl }}/assets/JeonghyeokPark.png "Profile Picture"){:.profile}
 
-Engineering graduate seeking an engineering position in natural language processing(NLP). 3+ years of research and implementation in NLP, including data mining/preprocessing, machine translation, pre-training language model, etc. Strong background in CNN, RNN, GAN,  and experimental design experience using packages, like Pytorch, TensorFlow, Numpy, OpenNMT, Fairseq. 5+ years of programming experience with Python, Java, and C, and familiar with GPU/TPU programming and computer hardware.
+
+
+## Publications
+
+Collaborative Anomaly Detection for Internet of Things based on Federated Learning
+Seongwoo Kim, He Cai, Cunqing Hua, Pengwenlong Gu, Wenchao Xu, Jeonghyeok Park. IEEE International Conference on Communication in China. August 09-11, 2020.
+
+Korean-to-Chinese Machine Translation using Chinese Character as Pivot Clue
+Jeonghyeok Park and Hai Zhao. 33rd Pacific Asia Conference on Language, Information and Computation (PACLIC 33). 
+
+Real-time Recognition of Guitar Performance Using Two Sensor Groups for Interactive Lesson
+Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings of the Twelfth International Conference on Tangible, Embedded, and embodied Interaction.
+
+## Resume
+
+![alt text]({{ site.baseurl }}/assets/NLP engineer_Jeonghyeok Park.pdf "Profile Picture"){:.profile}
+
+English 
+Chiense
+ 
