@@ -21,7 +21,8 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 
 ![alt text]({{ site.baseurl }}/assets/JeonghyeokPark.png "Profile Picture"){:.profile}
 
-
+Hello.
+Welcome to Jeonghyeok Park's homepage.
 
 ## Publications
 
@@ -36,7 +37,5 @@ Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings
 
 ## Resume
 
-[/assets/NLP engineer_Jeonghyeok Park.pdf](/assets/NLP engineer_Jeonghyeok Park.pdf)
-
-English 
-Chiense
+[English](/assets/NLP engineer_Jeonghyeok Park.pdf)
+[Chinese](assets/NLP工程师_朴廷爀.pdf)
