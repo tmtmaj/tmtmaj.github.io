@@ -19,7 +19,7 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 [jekyll]: https://github.com/jekyll/jekyll
 -->
 
-![alt text]({{ site.baseurl }}/assets/JeonghyeokPark.png "Profile Picture"){:.profile}
+![alt text]({{ site.baseurl }}/assets/JeonghyeokPark.png =15x10 "Profile Picture"){:.profile}
 
 ## Jeonghyeok Park
 
