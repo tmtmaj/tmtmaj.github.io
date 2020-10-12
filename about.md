@@ -21,21 +21,23 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 
 ![alt text]({{ site.baseurl }}/assets/JeonghyeokPark.png "Profile Picture"){:.profile}
 
-Hello.
+## Jeonghyeok Park
+
+Hello.  
 Welcome to Jeonghyeok Park's homepage.
 
 ## Publications
 
-Collaborative Anomaly Detection for Internet of Things based on Federated Learning
+Collaborative Anomaly Detection for Internet of Things based on Federated Learning  
 Seongwoo Kim, He Cai, Cunqing Hua, Pengwenlong Gu, Wenchao Xu, Jeonghyeok Park. IEEE International Conference on Communication in China. August 09-11, 2020.
 
-Korean-to-Chinese Machine Translation using Chinese Character as Pivot Clue
+Korean-to-Chinese Machine Translation using Chinese Character as Pivot Clue  
 Jeonghyeok Park and Hai Zhao. 33rd Pacific Asia Conference on Language, Information and Computation (PACLIC 33). 
 
-Real-time Recognition of Guitar Performance Using Two Sensor Groups for Interactive Lesson
+Real-time Recognition of Guitar Performance Using Two Sensor Groups for Interactive Lesson  
 Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings of the Twelfth International Conference on Tangible, Embedded, and embodied Interaction.
 
 ## Resume
 
-[English](/assets/NLP engineer_Jeonghyeok Park.pdf)
+[English](/assets/NLP engineer_Jeonghyeok Park.pdf)  
 [Chinese](assets/NLP工程师_朴廷爀.pdf)
