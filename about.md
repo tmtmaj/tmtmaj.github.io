@@ -25,8 +25,9 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 
 Hello.  
 Welcome to Jeonghyeok Park's homepage.  
-I am currently a Master student at Shanghai Jiaotong University.   
+I'm currently a Master student at Shanghai Jiaotong University in China.   
 I'm major in computer science, and my main research subject area is natural language processsing.  
+I like programming and singing.
 
 ## Publications
 
@@ -41,5 +42,5 @@ Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings
 
 ## Resume
 
-[English](/assets/NLP engineer_Jeonghyeok Park.pdf)  
+[English](assets/NLP_engineer_Jeonghyeok_Park.pdf)  
 [Chinese](assets/NLP工程师_朴廷爀.pdf)
