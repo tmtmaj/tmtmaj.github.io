@@ -57,8 +57,11 @@ descriptions:
   - cat: jekyll
     desc: "Posts describing Jekyll setup techniques."
 
-  - cat: dummy
+  - cat: Project
     desc: "Just some placeholder posts, lorem ipsum and the rest."
+    
+  - cat: NLP
+  	desc: "Posts my understanding about NLP"
 
 # Social icons and sharing options
 #
