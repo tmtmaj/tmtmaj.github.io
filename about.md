@@ -42,5 +42,5 @@ Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings
 
 ## Resume
 
-[English](assets/NLP_engineer_Jeonghyeok_Park.pdf)  
-[Chinese](assets/NLP工程师_朴廷爀.pdf)
+[English](assets/NLP_engineer_Jeonghyeok_Park_english.pdf)  
+[Chinese](assets/NLP_engineer_Jeonghyeok_Park_chinese.pdf)

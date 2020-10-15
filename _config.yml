@@ -9,12 +9,12 @@ exclude:
   - "/vendor/"
 
 # Site settings
-title: Jeonghyeok Park Homepage
+title: Jeonghyeok Park's Homepage
 subtitle: "Living like a machine"
 email: qkrwjdgur09@naver.com
 name: Jeonghyeok Park
-description: >
-  A simple yet classy theme for your Jekyll website or blog.
+# description: >
+  # A simple yet classy theme for your Jekyll website or blog.
 # Base URL of site (i.e. /blog). It should always start with a slash,
 # and never end with a slash. Set it to a blank value if hosting at the
 # root of your server.
@@ -53,12 +53,12 @@ jekyll-archives:
 # ga_tracking_id: "UA-XXXX-1"
 
 # Category descriptions (for archive pages)
-descriptions:
-  - cat: nlp
-    desc: "Posts describing Jekyll setup techniques."
+# descriptions:
+  # - cat: [Natural Language Processing]
+    # desc: "Posts describing Jekyll setup techniques."
 
-  - cat: project
-    desc: "Just some placeholder posts, lorem ipsum and the rest."
+  # - cat: Project
+    # desc: "Just some placeholder posts, lorem ipsum and the rest."
     
 #  - cat: NLP
 #  	desc: "Posts my understanding about NLP"
