@@ -3,10 +3,8 @@ title: "[PrLM] ELECTRA 정리"
 layout: post
 date: '2020-10-14 08:43:59 +0000'
 author: Jeonghyeok Park
-categories:
-- Natural Language Processing
-tags: 
-- NLP
+categories: Natural-Language-Processing
+tags: Natural-Language-Processing
 cover: "/assets/black.png"
 ---
 
@@ -105,3 +103,231 @@ window.tooltips.push(['#someId', { content: "This is the text of the tooltip!" }
 window.tooltips.push(['#someOtherId', { content: "{% include tooltips/example.html %}", placement: "right" }])
 </script>
 -->
+
+﻿
+
+안녕하세요.
+
+이번 포스팅에서 소개해드릴 내용은 현재 많은 자연어 처리 task에서 사용되고 있는 Pre-training Language Model (이하 PrLM) 중 하나인 ELECTRA입니다.
+
+이 글은 아래 참고 자료 중에 중국어 자료을 바탕으로 정리했습니다.
+
+ELECTRA는 Efficiently Learning an Encoder that Classifies Token Replacements Accurately의 약자입니다.
+
+(앞선 BERT, ELMO에 이어 ELECTRA 약자도 발음하기도 편하고 고민한 흔적이 느껴져요.. PrLM 논문들을 보면 논문의 타이틀이 얼마나 중요한지 다시 실감합니다. 내용도 중요하지만 타이틀에도 신중을 가할 필요가 있는 것 같아요.)
+
+이 논문은 ICLR 2020의 Openreview에 나왔던 논문입니다.
+
+주요 포인트:
+
+- 효율적인 학습이 가능하다. (더 적은 데이터/ 더 적은 파라미터/ 더 적은 훈련 시간으로 당시의 SOTA모델은 RoBERTa의 성능을 뛰어넘었다.)
+
+- GAN의 학습 방법을 NLP에 적용했다.
+
+(GAN과 완전히 같지는 않습니다. 아래에서 설명해드릴게요.)
+
+
+![사진 설명을 입력하세요.](http://)
+
+FLOPS는 1초당 부동 소수점 연산(곱셈)의 명령 실행 횟수를 나타내는 단위입니다. Training하는데 계산이 얼마나 필요한 지 정도로 이해하시면 됩니다.(논문의 appendices에 사용한 가정들이 자세히 나와있습니다.)
+
+당시 SOTA인 RoBERTa의 약 1/4의 계산량으로 그 성능을 능가했습니다.
+
+(사실 여기서 말한 1/4의 계산량도 현재는 꿈도 못 꿀 크기입니다 ㅠ)
+
+사진 설명을 입력하세요.
+
+논문에 나온 앞선 PrLM과의 비교입니다.
+
+오른쪽 그림에서는 일단 BERT는 제끼고(?) 들어가는 것을 확인할 수 있습니다. 통괘하네요. 둘다 Google에서 나온 거긴 하지만요. 그리고
+
+왼쪽 그래프에서는 위에 표에서 보셨듯이 RoBERTa가 대략 3.2 FLOPS에서 달성한 성능을 0.7 FLOPS 정도 만에 이미 능가했음을 보여줍니다.
+
+Model Architecture
+
+사진 설명을 입력하세요.
+
+computer vision을 공부하셨다면 이 구조 익숙하실 겁니다.
+
+GAN과 굉장히 흡사하죠.
+
+GAN을 간단히 되짚어보면
+
+1. Generator가 noise input를 받아 fake image를 생성
+
+2. Discriminator는 fake image가 real인지 fake인지 판별
+
+3. Discriminator가 판별한 결과, 즉 reward가 Generator로 전해짐
+
+(만약 fake image를 Discriminator가 real로 판별했다면 Generator는 지금 방향 그대로 신나게 fake image 생성, 만약 Discriminator가 fake image를 fake인지 알아채면 Generator는 다른 방향으로 훈련을 진행)
+
+Generator는 Discriminator를 속이려는 방향으로 Discriminator는 Generator가 생성한 image를 판별해내기 위한 방향으로 서로 대립 구도를 유지하며 모델을 학습합니다.
+
+다시 ELECTRA로 돌아가서
+
+먼저 Generator는 일부가 [MASK]된 문장을 받아 [MASK]된 단어를 유추합니다.
+
+논문에서는 Trasformer 모델의 encoder를 사용했습니다.
+
+문맥을 보고 [MASK]된 단어를 정확히 유추하려하는 모델은 BERT입니다.
+
+이 논문에서 제시한 방법은 Replaced Token Detection (RTD) 으로 BERT와는 차이가 있습니다.
+
+위의 모델 그림을 보시면 원래 문장을 유추하는 것이 아니라 그럴듯한(somewhat plausible) 단어를 생성하는 것을 확인하실 수 있습니다. 예를 들어 cooked이 Generator를 통해 ate로 바뀝니다.
+
+Discriminator는 Generator에서 생성된 문장을 받아 이 단어가 원래 문장에 있던 것인지 아니면 바뀐(replaced)된 단어인지 판별합니다. (Binary classification)
+
+Discriminator 역시 Transformer encoder와 같은 구조이지만 Generator보다는 더 큰 모델입니다.
+
+(Generator와 Discriminator가 같은 크기라면 Discriminator가 학습하기 너무 어렵다고 합니다. 실험을 통해 증명)
+
+간단히 정리하면
+
+Generator
+
+1.[MASK]가 포함된 문장을 받음
+
+2.[MASK]에 해당하는 단어를 생성 (정답이 아니지만 말이 되는 단어로)
+
+Discriminator
+
+1.Generator에서 생성된 문장을 받음
+
+2.모든 문장의 단어들에 대해 원래 문장에 있던 단어인지?(Original) 대체된 단어인지?(Replaced) 판별
+
+앞 부분에서 ELECTRA의 트레이닝 방식이 구조적으로 비슷하지만 GAN과는 확실히 다르다라고 말씀드렸는데요.
+
+차이점은 다음과 같습니다.
+
+사진 설명을 입력하세요.
+
+1. ELECTRA의 입력은 noise가 아닙니다. 데이터 셋의 문장이지만 일부가 마스킹되어있을 뿐이죠.
+
+GAN의 입력은 완전한 noise입니다.
+
+2. ELECTRA의 Generator와 Discriminator의 목표는 서로 관련이 없습니다. Generator는 문장의 [MASK]를 채울뿐이고 Discriminator는 문장이 어떤 단어가 original이고 replaced인지 구별하는 것입니다.
+
+반면에 GAN의 Generator와 Discirminator는 서로 대립적인 목표를 가지고 훈련이 됩니다. 서로를 이기기 위해서
+
+(GAN은 Generative Adversarial Network을 의미하는데 'Adversarial'이 ELECTRA 모델 훈련 과정에서는 빠져있죠. Generator와 Discriminator의 목표가 다르니까요.)
+
+3. ELECTRA의 Discriminator에서 gradient가 Generator로 전파되지 않습니다. 사실은 전파할 수 없다는 것이 더 맞는 말입니다. Generator에서 생성된 단어들은 softmax-sampling operation(argmax)를 통해 생성됩니다. 즉, [MASK]에 적합한 단어를 뽑아내는(argmax) 과정에서 gradient가 끊기므로 back-propagation이 불가능합니다. (We don’t back-propagate the discriminator loss through the generator (indeed, we can’t because of the sampling step)
+
+GAN에서는 Discriminator의 gradient(reward)가 Generator로 전파됩니다.
+
+4.ELECTRA 모델의 Generator는 maximum likelihood (MLE) 를 사용하여 훈련됩니다. (the generator producing corrupted tokens is trained with maximum-likelihood due to the difficulty of applying GANs to text - Massimo Caccia, Lucas Caccia, William Fedus, Hugo Larochelle, Joelle Pineau, and Laurent Charlin. Language GANs falling short. arXiv preprint arXiv, 2018.)
+
+loss function은 generator와 discriminator의 loss를 결합한 형태입니다.
+
+사진 설명을 입력하세요.
+
+MLM의 loss가 상대적으로 크기 때문에 실험에서 λ는 50으로 설정합니다.
+
+여기서 생각해봐야할 점은 효율적인 학습입니다.
+
+BERT의 경우에 일반적으로 문장의 15%를 [MASK]하고 그 [MASK]된 단어를 유추하기 위한 훈련을 합니다.
+
+이 논문에서는 이점을 지적했습니다. 그렇다면 문장의 85%는 훈련에 아무런 기여도 못하는 것인데..이는 너무 비효율적이다라고요.
+
+반면 ELECTRA에서는 문장의 모든 단어에 대해 original인지 repalced 인지 판별합니다. (문장의 100%가 훈련에 기여)
+
+그래서 적은 데이터양, 적은 파라미터를 가지고 더욱 빠른 시간에 학습이 가능한 것이죠.
+
+훈련을 다 마친 후 Generator는 떼버리고 Discriminator로 Fine tuning을 진행합니다.
+
+Experiment
+
+논문에서 엄청난 양의 실험을 했습니다. 실패한 시도를 예로 들어 현재 모델의 타당성을 입증했구요.
+
+(한가지에만 이렇게 몰두해야 좋은 결과에 도달할 수 있는 것 같습니다.)
+
+첫째로 weight sharing에 대한 실험입니다.
+
+큰 모델일 수록 weight sharing을 하는 것이 좋습니다.
+
+parameter도 줄이고 학습 효과도 높힐 수 있고 성능도 더 좋으니까요.
+
+하지만 이에는 한가지 전제가 필요합니다. 바로 모델 크기가 같아야 하죠.
+
+아래에서 자세히 말씀드릴 테지만 Generator의 크기는 Discriminator보다 작은게 좋습니다. (이 논문에서 실험을 통해 입증했습니다)
+
+근데 모델 크기가 달라지면 모델의 parameter를 공유하기 애매합니다.
+
+따라서 이 논문에서는 Generator와 Discriminator의 embedding의 parameter만 공유합니다.
+
+논문에서 embedding의 parameter만 공유해도 큰 효과를 볼 수 있음을 실험을 통해 증명합니다.
+
+둘째는 smaller generator입니다.
+
+Generator가 작으면 성능이 더 좋다.라는 것을 실험을 통해 입증합니다.
+
+사진 설명을 입력하세요.
+
+보시면 Discriminator size가 768일때 generator size가 256일때 가장 좋은 성능을 보여줍니다.
+
+512일 때는 256에서 256일 때는 64에서
+
+논문에서는 generator의 크기가 discriminator의 1/4에서 1/2일 때 가장 성능이 좋았다고 합니다.
+
+셋째로 training algorithm에 대한 실험입니다.
+
+1. Adversarial Contrastive Estimation
+
+위에서 말씀드렸듯이 ELECTRA모델은 Generator와 Discriminator의 목표가 서로 관련이 없습니다.
+
+이 방법은 GAN처럼 ELECTRA모델의 Generator의 loss를 RTD loss를 최대화 하는 것으로 바꾸어 adversirial 방식으로 훈련합니다.
+
+2. Two-stage training
+
+먼저 generator를 훈련하고 모델을 freeze한 후 generator의 파라미터로 Discriminator를 초기화하고 훈련합니다.
+
+사진 설명을 입력하세요.
+
+Experiment result
+
+사진 설명을 입력하세요.
+
+사진 설명을 입력하세요.
+
+훈련 결과는 위와 같습니다. 놀랍습니다.
+
+먼저 ELECTRA-small 모델을 보시면 Bert base모델에 비해 45배나 빠르게 훈련이 가능합니다. 성능은 살짝 못미치지만요. 그래도 쓸만합니다 GPT로는 25일간 훈련해야하는 반면 Google goolab pro에서 4일간만 훈련하면 79.0라는 성능을 낼 수 있으니까요.
+
+실제로 도전해볼 수 있는 정도는 small까지긴 하지만 만족합니다.
+
+한국어에서 한번 시도해보고 결과를 나중에 포스팅하겠습니다.
+
+이상으로 결과를 천천히 감상해주세요 ㅎㅎㅎ
+
+아래는 개인적인 고찰입니다.
+
+앞서 나온 PrLM 모델들은 XLnet, RoBERTa 등을 훈련하기 위해서는 1024개 TPU..그 엄청난 자원으로 며칠간 훈련을 해서 성능을 향상시켰다.. 할 말 없습니다. 열심히 해서 대기업에 들어가야죠. 대기업들의 전유물이었죠.
+
+저처럼 single GPU를 사용하는 가난한 학생에게는 꿈보다 먼 얘기였습니다.
+
+하지만 ELECTRA가 나오면서 약간의 희망이 생긴 것 같습니다.
+
+아직 테스트는 해보지 않아서 확실하지는 않지만 논문을 읽어본 결과 굉장히 희망적이라고 생각합니다.
+
+그리고 엄밀히는 GAN은 아니지만 ELECTRA에서 사용했던 training 방식은 앞으로 많은 논문에 응용되어 나타날 것 같습니다.
+
+binary하니까 먼저 드는 생각은 multi classification loss 였던 것 같습니다.
+
+직접 적용은 어렵겠지만 응용을 통해 충분히 가능성이 있을 것 같습니다.
+
+이번 포스팅은 여기까지입니다.
+
+제가 참고한 자료는 다음과 같습니다.
+
+https://openreview.net/forum?id=r1xMH1BtvB
+
+https://ai.googleblog.com/2020/03/more-efficient-nlp-model-pre-training.html
+
+https://mp.weixin.qq.com/s/_R-Bp5lLov-QIoPRl6fFMA
+
+
+https://www.youtube.com/watch?v=ayVS904xQpQ
+
+https://www.youtube.com/watch?v=BGRculoppT8&t=813s
+
+https://www.youtube.com/watch?v=QWu7j1nb_jI&t=189s
