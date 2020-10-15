@@ -8,111 +8,13 @@ tags: Natural-Language-Processing
 cover: "/assets/black.png"
 ---
 
-<!--
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
-
-Adding New Posts
-
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-# Tags and Categories
-
-If you list one or more categories or tags in the front matter of your post, they will be included with the post on the page as links. Clicking the link will bring you to an auto-generated archive page for the category or tag, created using the [jekyll-archive][jekyll-archive] gem.
-
-# Cover Images
-
-To add a cover image to your post, set the "cover" property in the front matter with the relative URL of the image (i.e. <code>cover: "/assets/cover_image.jpg"</code>).
-
-# Code Snippets
-
-You can use [highlight.js][highlight] to add syntax highlight code snippets:
-
-Use the [Liquid][liquid] `{% raw %}{% highlight <language> %}{% endraw %}` tag to add syntax highlighting to code snippets.
-
-For instance, this template...
-{% highlight html %}
-{% raw %}{% highlight javascript %}    
-function demo(string, times) {    
-  for (var i = 0; i < times; i++) {    
-    console.log(string);    
-  }    
-}    
-demo("hello, world!", 10);
-{% endhighlight %}{% endraw %}
-{% endhighlight %}
-
-...will come out looking like this:
-
-{% highlight javascript %}
-function demo(string, times) {
-  for (var i = 0; i < times; i++) {
-    console.log(string);
-  }
-}
-demo("hello, world!", 10);
-{% endhighlight %}
-
-Syntax highlighting is done using [highlight.js][highlight]. You can change the active theme in [head.html](https://github.com/bencentra/centrarium/blob/2dcd73d09e104c3798202b0e14c1db9fa6e77bc7/_includes/head.html#L15).
-
-# Blockquotes
-
-> "Blockquotes will be indented, italicized, and given a subdued light gray font. These are good for side comments not directly related to your content, or long quotations from external sources." - Some Smart Guy
-
-# Images
-
-Lightbox has been enabled for images. To create the link that'll launch the lightbox, add <code>data-lightbox</code> and <code>data-title</code> attributes to an <code>&lt;a&gt;</code> tag around your <code>&lt;img&gt;</code> tag. The result is:
-
-<a href="//bencentra.com/assets/images/falcon9_large.jpg" data-lightbox="falcon9-large" data-title="Check out the Falcon 9 from SpaceX">
-  <img src="//bencentra.com/assets/images/falcon9_small.jpg" title="Check out the Falcon 9 from SpaceX">
-</a>
-
-For more information, check out the [Lightbox][lightbox] website.
-
-# Tooltips
-
-With Tippy.js, you can add tooltips to your text with a little bit of HTML and JavaScript. First, create the tooltip trigger: `<span class="tooltip" id="someId">trigger</span>`. Then in a `<script>` tag at the bottom of your page, add some code to initialize the tooltip when the document is ready: `window.tooltips.push(['#someId', { content: "Content" }])`
-
-See the [Tippy.js docs](https://atomiks.github.io/tippyjs/) for additional configuration that you can provide for your tooltips.
-
-You can also use a Liquid `include` to import tooltip text or HTML from an external file: 
-
-```
-window.tooltips.push(['#someOtherId', { content: "{% raw %}{% include tooltips/example.html %}{% endraw %}" }])
-```
-
-To modify the styles for tooltip triggers, find the `.tooltip` class in `_layout.scss`.
-
-Here's an <span class="tooltip" id="someId">example tooltip</span>, and <span class="tooltip" id="someOtherId">here's another</span>.
-
-<br/>
-{% include page_divider.html %}
-
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll’s dedicated Help repository][jekyll-help].
-
-[jekyll]:      http://jekyllrb.com
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-help]: https://github.com/jekyll/jekyll-help
-[highlight]:   https://highlightjs.org/
-[lightbox]:    http://lokeshdhakar.com/projects/lightbox2/
-[jekyll-archive]: https://github.com/jekyll/jekyll-archives
-[liquid]: https://github.com/Shopify/liquid/wiki/Liquid-for-Designers
-
-<script>
-window.tooltips = window.tooltips || []
-window.tooltips.push(['#someId', { content: "This is the text of the tooltip!" }])
-window.tooltips.push(['#someOtherId', { content: "{% include tooltips/example.html %}", placement: "right" }])
-</script>
--->
-
-﻿
-
 안녕하세요.
 
-이번 포스팅에서 소개해드릴 내용은 현재 많은 자연어 처리 task에서 사용되고 있는 Pre-training Language Model (이하 PrLM) 중 하나인 ELECTRA입니다.
+이번에 제가 소개해드릴 내용은 현재 많은 자연어 처리 task에서 사용되고 있는 Pre-training Language Model (이하 PrLM) 중 하나인 ELECTRA입니다.
 
 이 글은 아래 참고 자료 중에 중국어 자료을 바탕으로 정리했습니다.
 
-ELECTRA는 Efficiently Learning an Encoder that Classifies Token Replacements Accurately의 약자입니다.
+**ELECTRA**는 Efficiently Learning an Encoder that Classifies Token Replacements Accurately의 약자입니다.
 
 (앞선 BERT, ELMO에 이어 ELECTRA 약자도 발음하기도 편하고 고민한 흔적이 느껴져요.. PrLM 논문들을 보면 논문의 타이틀이 얼마나 중요한지 다시 실감합니다. 내용도 중요하지만 타이틀에도 신중을 가할 필요가 있는 것 같아요.)
 
@@ -126,8 +28,8 @@ ELECTRA는 Efficiently Learning an Encoder that Classifies Token Replacements Ac
 
 (GAN과 완전히 같지는 않습니다. 아래에서 설명해드릴게요.)
 
+![]({{ site.baseurl }}/assets/electra1.png )
 
-![사진 설명을 입력하세요.](http://)
 
 FLOPS는 1초당 부동 소수점 연산(곱셈)의 명령 실행 횟수를 나타내는 단위입니다. Training하는데 계산이 얼마나 필요한 지 정도로 이해하시면 됩니다.(논문의 appendices에 사용한 가정들이 자세히 나와있습니다.)
 
@@ -135,7 +37,7 @@ FLOPS는 1초당 부동 소수점 연산(곱셈)의 명령 실행 횟수를 나�
 
 (사실 여기서 말한 1/4의 계산량도 현재는 꿈도 못 꿀 크기입니다 ㅠ)
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra2.png )
 
 논문에 나온 앞선 PrLM과의 비교입니다.
 
@@ -143,9 +45,10 @@ FLOPS는 1초당 부동 소수점 연산(곱셈)의 명령 실행 횟수를 나�
 
 왼쪽 그래프에서는 위에 표에서 보셨듯이 RoBERTa가 대략 3.2 FLOPS에서 달성한 성능을 0.7 FLOPS 정도 만에 이미 능가했음을 보여줍니다.
 
-Model Architecture
+### Model Architecture
 
-사진 설명을 입력하세요.
+
+![]({{ site.baseurl }}/assets/electra3.png )
 
 computer vision을 공부하셨다면 이 구조 익숙하실 겁니다.
 
@@ -153,11 +56,11 @@ GAN과 굉장히 흡사하죠.
 
 GAN을 간단히 되짚어보면
 
-1. Generator가 noise input를 받아 fake image를 생성
+- Generator가 noise input를 받아 fake image를 생성
 
-2. Discriminator는 fake image가 real인지 fake인지 판별
+- Discriminator는 fake image가 real인지 fake인지 판별
 
-3. Discriminator가 판별한 결과, 즉 reward가 Generator로 전해짐
+- Discriminator가 판별한 결과, 즉 reward가 Generator로 전해짐
 
 (만약 fake image를 Discriminator가 real로 판별했다면 Generator는 지금 방향 그대로 신나게 fake image 생성, 만약 Discriminator가 fake image를 fake인지 알아채면 Generator는 다른 방향으로 훈련을 진행)
 
@@ -183,43 +86,43 @@ Discriminator 역시 Transformer encoder와 같은 구조이지만 Generator보�
 
 간단히 정리하면
 
-Generator
+#### Generator
 
-1.[MASK]가 포함된 문장을 받음
+- [MASK]가 포함된 문장을 받음
 
-2.[MASK]에 해당하는 단어를 생성 (정답이 아니지만 말이 되는 단어로)
+- [MASK]에 해당하는 단어를 생성 (정답이 아니지만 말이 되는 단어로)
 
-Discriminator
+#### Discriminator
 
-1.Generator에서 생성된 문장을 받음
+- Generator에서 생성된 문장을 받음
 
-2.모든 문장의 단어들에 대해 원래 문장에 있던 단어인지?(Original) 대체된 단어인지?(Replaced) 판별
+- 모든 문장의 단어들에 대해 원래 문장에 있던 단어인지?(Original) 대체된 단어인지?(Replaced) 판별
 
 앞 부분에서 ELECTRA의 트레이닝 방식이 구조적으로 비슷하지만 GAN과는 확실히 다르다라고 말씀드렸는데요.
 
 차이점은 다음과 같습니다.
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra4.png )
 
-1. ELECTRA의 입력은 noise가 아닙니다. 데이터 셋의 문장이지만 일부가 마스킹되어있을 뿐이죠.
+- ELECTRA의 입력은 noise가 아닙니다. 데이터 셋의 문장이지만 일부가 마스킹되어있을 뿐이죠.
 
 GAN의 입력은 완전한 noise입니다.
 
-2. ELECTRA의 Generator와 Discriminator의 목표는 서로 관련이 없습니다. Generator는 문장의 [MASK]를 채울뿐이고 Discriminator는 문장이 어떤 단어가 original이고 replaced인지 구별하는 것입니다.
+- ELECTRA의 Generator와 Discriminator의 목표는 서로 관련이 없습니다. Generator는 문장의 [MASK]를 채울뿐이고 Discriminator는 문장이 어떤 단어가 original이고 replaced인지 구별하는 것입니다.
 
 반면에 GAN의 Generator와 Discirminator는 서로 대립적인 목표를 가지고 훈련이 됩니다. 서로를 이기기 위해서
 
 (GAN은 Generative Adversarial Network을 의미하는데 'Adversarial'이 ELECTRA 모델 훈련 과정에서는 빠져있죠. Generator와 Discriminator의 목표가 다르니까요.)
 
-3. ELECTRA의 Discriminator에서 gradient가 Generator로 전파되지 않습니다. 사실은 전파할 수 없다는 것이 더 맞는 말입니다. Generator에서 생성된 단어들은 softmax-sampling operation(argmax)를 통해 생성됩니다. 즉, [MASK]에 적합한 단어를 뽑아내는(argmax) 과정에서 gradient가 끊기므로 back-propagation이 불가능합니다. (We don’t back-propagate the discriminator loss through the generator (indeed, we can’t because of the sampling step)
+- ELECTRA의 Discriminator에서 gradient가 Generator로 전파되지 않습니다. 사실은 전파할 수 없다는 것이 더 맞는 말입니다. Generator에서 생성된 단어들은 softmax-sampling operation(argmax)를 통해 생성됩니다. 즉, [MASK]에 적합한 단어를 뽑아내는(argmax) 과정에서 gradient가 끊기므로 back-propagation이 불가능합니다. (We don’t back-propagate the discriminator loss through the generator (indeed, we can’t because of the sampling step)
 
 GAN에서는 Discriminator의 gradient(reward)가 Generator로 전파됩니다.
 
-4.ELECTRA 모델의 Generator는 maximum likelihood (MLE) 를 사용하여 훈련됩니다. (the generator producing corrupted tokens is trained with maximum-likelihood due to the difficulty of applying GANs to text - Massimo Caccia, Lucas Caccia, William Fedus, Hugo Larochelle, Joelle Pineau, and Laurent Charlin. Language GANs falling short. arXiv preprint arXiv, 2018.)
+- ELECTRA 모델의 Generator는 maximum likelihood (MLE) 를 사용하여 훈련됩니다. (the generator producing corrupted tokens is trained with maximum-likelihood due to the difficulty of applying GANs to text - Massimo Caccia, Lucas Caccia, William Fedus, Hugo Larochelle, Joelle Pineau, and Laurent Charlin. Language GANs falling short. arXiv preprint arXiv, 2018.)
 
 loss function은 generator와 discriminator의 loss를 결합한 형태입니다.
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra5.png )
 
 MLM의 loss가 상대적으로 크기 때문에 실험에서 λ는 50으로 설정합니다.
 
@@ -235,7 +138,7 @@ BERT의 경우에 일반적으로 문장의 15%를 [MASK]하고 그 [MASK]된 �
 
 훈련을 다 마친 후 Generator는 떼버리고 Discriminator로 Fine tuning을 진행합니다.
 
-Experiment
+### Experiment
 
 논문에서 엄청난 양의 실험을 했습니다. 실패한 시도를 예로 들어 현재 모델의 타당성을 입증했구요.
 
@@ -261,7 +164,7 @@ parameter도 줄이고 학습 효과도 높힐 수 있고 성능도 더 좋으�
 
 Generator가 작으면 성능이 더 좋다.라는 것을 실험을 통해 입증합니다.
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra6.png )
 
 보시면 Discriminator size가 768일때 generator size가 256일때 가장 좋은 성능을 보여줍니다.
 
@@ -271,51 +174,71 @@ Generator가 작으면 성능이 더 좋다.라는 것을 실험을 통해 입�
 
 셋째로 training algorithm에 대한 실험입니다.
 
-1. Adversarial Contrastive Estimation
+- Adversarial Contrastive Estimation
 
 위에서 말씀드렸듯이 ELECTRA모델은 Generator와 Discriminator의 목표가 서로 관련이 없습니다.
 
 이 방법은 GAN처럼 ELECTRA모델의 Generator의 loss를 RTD loss를 최대화 하는 것으로 바꾸어 adversirial 방식으로 훈련합니다.
 
-2. Two-stage training
+- Two-stage training
 
 먼저 generator를 훈련하고 모델을 freeze한 후 generator의 파라미터로 Discriminator를 초기화하고 훈련합니다.
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra7.png )
 
-Experiment result
+###Experiment result
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra8.png )
 
-사진 설명을 입력하세요.
+![]({{ site.baseurl }}/assets/electra9.png )
 
-훈련 결과는 위와 같습니다. 놀랍습니다.
+실험 결과는 다음과 같습니다.
 
-먼저 ELECTRA-small 모델을 보시면 Bert base모델에 비해 45배나 빠르게 훈련이 가능합니다. 성능은 살짝 못미치지만요. 그래도 쓸만합니다 GPT로는 25일간 훈련해야하는 반면 Google goolab pro에서 4일간만 훈련하면 79.0라는 성능을 낼 수 있으니까요.
+먼저 ELECTRA-small 모델을 보시면 Bert base모델에 비해 45배나 빠르게 훈련이 가능합니다. 성능은 best에 살짝 못미치지만 이제는 PrLM까지 훈련하는 것이 먼 꿈 같은 이야기는 아닌 것 같습니다.  GPT로는 25일간 훈련해야하는 반면 Google goolab pro에서 4일간만 훈련하면 79.0라는 성능을 낼 수 있으니까요.
 
 실제로 도전해볼 수 있는 정도는 small까지긴 하지만 만족합니다.
 
 한국어에서 한번 시도해보고 결과를 나중에 포스팅하겠습니다.
 
-이상으로 결과를 천천히 감상해주세요 ㅎㅎㅎ
+### personal considerations
 
-아래는 개인적인 고찰입니다.
+앞서 나온 PrLM 모델(XLnet, RoBERTa.. PrLM large model)은 천개 이상의 TPU, 그것도 하루 이틀이 아닌 한달 가까히 기간 동안 훈련을 합니다.
 
-앞서 나온 PrLM 모델들은 XLnet, RoBERTa 등을 훈련하기 위해서는 1024개 TPU..그 엄청난 자원으로 며칠간 훈련을 해서 성능을 향상시켰다.. 할 말 없습니다. 열심히 해서 대기업에 들어가야죠. 대기업들의 전유물이었죠.
+실제 실험 결과로는 놀랍지만 한편으로는 이런 생각도 듭니다. 
+
+좋은 성능은 당연할 수 밖에 없는 거 아닌가? 
+
+많은 양의 데이터, 컴퓨팅 자원, 긴 훈련 시간 = state of the art performance
+
+약간은 무력한 느낌마저 들 때도 있습니다.
+
+그래도 큰 기업에서 제공하는 훈련된 모델로 PrLM 모델을 훈련할 필요 없이 많은 실험을 해볼 수 있습니다.
+
+하지만 몇가지 제약이 있죠. 
+
+첫번째로, 데이터의 도메인입니다. 
+훈련에 사용될 데이터셋과 이용하는 PrLM의 모델의 데이터셋의 도메인이 달라 오히려 성능이 저하됨.
+특히, Task/Domain-specific 모델에 적용하면 오히려 성능이 떨어지는 경우가 많습니다. 
+
+(한국어 BERT의 출력을 NMT 모델에 적용시켜봤는데 오히려 성능이 떨어졌습니다. 
+Incorporating BERT into Neural Machine Translation의 내용을 참고하여 시도했습니다. 
+이 밖에도 출력을 바로 NMT의 입력으로 넣는 방법, input embedding에 BERT의 출력을 첨가하는 (averging, concatenatnion, gating network) 방법을 시도했지만 역시 성능이 떨어졌습니다.)
+
+두번째로, vocab size가 고정되어 있어 fine-tuning을 할 경우 입력할 input의 vocab도 PrLM의 vocab와 똑같이 맞춰야 합니다.
+
+
 
 저처럼 single GPU를 사용하는 가난한 학생에게는 꿈보다 먼 얘기였습니다.
 
-하지만 ELECTRA가 나오면서 약간의 희망이 생긴 것 같습니다.
+하지만 ELECTRA로 약간의 희망이 생긴 것 같습니다.
 
 아직 테스트는 해보지 않아서 확실하지는 않지만 논문을 읽어본 결과 굉장히 희망적이라고 생각합니다.
 
 그리고 엄밀히는 GAN은 아니지만 ELECTRA에서 사용했던 training 방식은 앞으로 많은 논문에 응용되어 나타날 것 같습니다.
 
-binary하니까 먼저 드는 생각은 multi classification loss 였던 것 같습니다.
-
 직접 적용은 어렵겠지만 응용을 통해 충분히 가능성이 있을 것 같습니다.
 
-이번 포스팅은 여기까지입니다.
+
 
 제가 참고한 자료는 다음과 같습니다.
 
@@ -324,7 +247,6 @@ https://openreview.net/forum?id=r1xMH1BtvB
 https://ai.googleblog.com/2020/03/more-efficient-nlp-model-pre-training.html
 
 https://mp.weixin.qq.com/s/_R-Bp5lLov-QIoPRl6fFMA
-
 
 https://www.youtube.com/watch?v=ayVS904xQpQ
 
