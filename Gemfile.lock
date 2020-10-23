@@ -36,6 +36,8 @@ GEM
       sinatra-contrib (~> 1.4)
     jekyll-archives (2.2.1)
       jekyll (>= 3.6, < 5.0)
+    jekyll-feed (0.15.1)
+      jekyll (>= 3.7, < 5.0)
     jekyll-paginate-v2 (2.0.0)
       jekyll (~> 3.0)
     jekyll-sass-converter (1.5.2)
@@ -92,6 +94,7 @@ DEPENDENCIES
   jekyll (< 4)
   jekyll-admin
   jekyll-archives
+  jekyll-feed
   jekyll-paginate-v2
   jekyll-sitemap
 
