@@ -5,6 +5,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate-v2
   - jekyll-image-size
+
   
 exclude:
   - "/vendor/"

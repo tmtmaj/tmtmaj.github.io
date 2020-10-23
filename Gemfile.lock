@@ -40,6 +40,7 @@ GEM
     jekyll-image-size (1.2.1)
       fastimage (>= 1.8)
       jekyll (>= 3.7)
+    jekyll-paginate (1.1.0)
     jekyll-paginate-v2 (2.0.0)
       jekyll (~> 3.0)
     jekyll-sass-converter (1.5.2)
@@ -97,6 +98,7 @@ DEPENDENCIES
   jekyll-admin
   jekyll-archives
   jekyll-image-size (~> 1.2)
+  jekyll-paginate
   jekyll-paginate-v2
   jekyll-sitemap
 
