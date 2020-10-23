@@ -26,8 +26,7 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 
 ## Jeonghyeok Park
 
-Hello.  
-Welcome to Jeonghyeok Park's homepage.  
+Hello. Welcome to Jeonghyeok Park's homepage.  
 I'm currently a Master student at Shanghai Jiaotong University in China.   
 I'm major in computer science, and my main research subject area is natural language processsing.  
 I like programming and singing.
