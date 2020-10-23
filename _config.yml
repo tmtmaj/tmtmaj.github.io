@@ -10,7 +10,7 @@ exclude:
 
 # Site settings
 title: Jeonghyeok Park's Homepage
-subtitle: "Living like a machinesss"
+subtitle: "Living like a machine"
 email: qkrwjdgur09@naver.com
 name: Jeonghyeok Park
 
@@ -53,11 +53,11 @@ jekyll-archives:
 
 # Category descriptions (for archive pages)
 # descriptions:
-  # - cat: [Natural Language Processing]
-    # desc: "Posts describing Jekyll setup techniques."
+  # - cat: Natural-language-processing
+    # desc: "Natural Language Processing"
 
   # - cat: Project
-    # desc: "Just some placeholder posts, lorem ipsum and the rest."
+    # desc: "Project"
     
 #  - cat: NLP
 #  	desc: "Posts my understanding about NLP"

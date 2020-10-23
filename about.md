@@ -21,6 +21,8 @@ You can find out more info about customizing your Jekyll theme, as well as basic
 
 ![alt text]({{ site.baseurl }}/assets/JeonghyeokPark.png ){:.profile}
 
+--- 
+
 ## Jeonghyeok Park
 
 Hello.  
@@ -28,19 +30,12 @@ Welcome to Jeonghyeok Park's homepage.
 I'm currently a Master student at Shanghai Jiaotong University in China.   
 I'm major in computer science, and my main research subject area is natural language processsing.  
 I like programming and singing.
-
-## Publications
-
-Collaborative Anomaly Detection for Internet of Things based on Federated Learning  
-Seongwoo Kim, He Cai, Cunqing Hua, Pengwenlong Gu, Wenchao Xu, Jeonghyeok Park. IEEE International Conference on Communication in China. August 09-11, 2020.
-
-Korean-to-Chinese Machine Translation using Chinese Character as Pivot Clue  
-Jeonghyeok Park and Hai Zhao. 33rd Pacific Asia Conference on Language, Information and Computation (PACLIC 33). 
-
-Real-time Recognition of Guitar Performance Using Two Sensor Groups for Interactive Lesson  
-Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings of the Twelfth International Conference on Tangible, Embedded, and embodied Interaction.
+ 
+---
 
 ## Resume
 
-[English](assets/NLP_engineer_Jeonghyeok_Park_english.pdf)  
-[Chinese](assets/NLP_engineer_Jeonghyeok_Park_chinese.pdf)
+[English]({{ 'assets/NLP_engineer_jeonghyeokpark_english_2020_10_22.pdf' | relative_url }})   
+[Chinese]({{ 'assets/NLP_engineer_jeonghyeokpark_chinese_2020_10_22.pdf' | relative_url }}) 
+
+---
