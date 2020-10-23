@@ -2,6 +2,7 @@
 title: GuitarSolo (IT Convergence Guitar For Interactive Lesson)
 layout: post
 date: '2020-10-14 08:43:59 +0000'
+permalink: /page/
 author: Jeonghyeok Park
 categories: Project
 tags: Project

@@ -11,6 +11,7 @@ GEM
       http_parser.rb (~> 0.6.0)
     eventmachine (1.2.7)
     eventmachine (1.2.7-x64-mingw32)
+    fastimage (2.2.0)
     ffi (1.11.1)
     ffi (1.11.1-x64-mingw32)
     forwardable-extended (2.6.0)
@@ -36,8 +37,9 @@ GEM
       sinatra-contrib (~> 1.4)
     jekyll-archives (2.2.1)
       jekyll (>= 3.6, < 5.0)
-    jekyll-feed (0.15.1)
-      jekyll (>= 3.7, < 5.0)
+    jekyll-image-size (1.2.1)
+      fastimage (>= 1.8)
+      jekyll (>= 3.7)
     jekyll-paginate-v2 (2.0.0)
       jekyll (~> 3.0)
     jekyll-sass-converter (1.5.2)
@@ -94,7 +96,7 @@ DEPENDENCIES
   jekyll (< 4)
   jekyll-admin
   jekyll-archives
-  jekyll-feed
+  jekyll-image-size (~> 1.2)
   jekyll-paginate-v2
   jekyll-sitemap
 
