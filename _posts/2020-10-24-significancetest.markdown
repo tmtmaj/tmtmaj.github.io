@@ -2,7 +2,6 @@
 title: "[TIP] ﻿기계 번역을 위한 유의성 검정 (significance test for machine translation)"
 layout: post
 author: Jeonghyeok Park
-permalink: /page/
 categories: Natural-Language-Processing
 tags: Natural-Language-Processing
 ---
