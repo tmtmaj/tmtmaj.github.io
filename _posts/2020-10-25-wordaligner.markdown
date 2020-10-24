@@ -1,5 +1,5 @@
 ---
-title: "﻿[자연어처리] 비지도 워드 얼라이너 설치 및 사용법(Unsupervised Word Aligner Install and Use)"
+title: "﻿[NLP] 비지도 워드 얼라이너 설치 및 사용법(Unsupervised Word Aligner Install and Use)"
 layout: post
 author: Jeonghyeok Park
 categories: Natural-Language-Processing
