@@ -6,7 +6,6 @@ categories: Natural-Language-Processing
 tags: Natural-Language-Processing
 ---
 
-﻿
 
 안녕하세요.
 
@@ -14,8 +13,8 @@ tags: Natural-Language-Processing
 자연어 처리를 공부하고 계신 분들이라면 한번 쯤 들어보셨을 텐데요.
 간단히 예를 들면,
 
-["나는", "너를", "사랑해"]  
-["I", "love", "you"]
+``["나는", "너를", "사랑해"]``  
+``["I", "love", "you"]``
 
 위와 같이 서로 대응되는 문장이 있을 때, "나는"은 "I"에 대응되고, "너를"은 "you"에 대응되고, "사랑해"는 "love"에 대응되죠? (문장을 간단하게 공백으로 토큰화했습니다.)
 각 단어에 대응되는 정보를 담고 있는 것이 word alignment입니다.
@@ -29,7 +28,7 @@ word alignment를 표현하는 대표적인 방법은 "Pharaoh format"입니다.
 
 한국어 to 영어
 
-0-0 1-2 2-1
+``0-0 1-2 2-1``
 
 왜냐하면,
 
@@ -38,7 +37,7 @@ word alignment를 표현하는 대표적인 방법은 "Pharaoh format"입니다.
 각 단어에 대해 0부터 시작하는 index를 부여한 후, [source_language_index-target_language_index]의 방식으로 나열합니다.
 반대로 영어 to 한국어라면
 
-0-0 2-1 1-2
+``0-0 2-1 1-2``
 
 가 됩니다.
 
@@ -73,11 +72,11 @@ google colab에서 설치하고 사용하는 방법에 대한 instuction이 없�
 
 fast_align 모델은
 
-"토큰화된 한국어 문장" ||| "토큰화된 영어 문장"
+``"토큰화된 한국어 문장" ||| "토큰화된 영어 문장"``
 
 즉,
 
-나는 너를 사랑해 ||| I love you
+``나는 너를 사랑해 ||| I love you``
 
 가운데 ``|||`` 막대 기호를 기준으로 한국어 문장과 영어 문장이 한 라인에 입력된 파일이 필요합니다.
 
