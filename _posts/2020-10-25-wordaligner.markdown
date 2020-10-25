@@ -81,17 +81,19 @@ fast_align 모델은
 가운데 ``|||`` 막대 기호를 기준으로 한국어 문장과 영어 문장이 한 라인에 입력된 파일이 필요합니다.
 
 전처리를 위한 리눅스 명령어입니다.
+
 ```
 !paste -d "|" source_file target_file | sed 's/|/ ||| /g' > source_target_file
 ```
+
 source_file에 source language corpus를 넣으시구요. target_file은 target language corpus를 넣으시면 source 문장과 target 문장이 이쁘게 합쳐져서 source_target_file로 출력됩니다.
 
-(주의하실 점은 source language corpus나 target language corpus에 막대기호(|)가 있는지 없는지 확인해주세요. 있다면 삭제를 해주세요. 왜나면 위의 리눅스 명령어가 먼저 막대기호 하나를 사이에 두고 두 코퍼스를 합친 후에 막대기호 하나를 세 개로 바꾸는 명령어이기 때문입니다. 만약 원래 코퍼스에 막대기호가 있었다면 그 문장에는 두 개 이상의 삼 막대기호(|||)가 생겨서 정확한 alignment를 얻을 수 없습니다. )
+(주의하실 점은 source language corpus나 target language corpus에 막대기호``|``가 있는지 없는지 확인해주세요. 있다면 삭제를 해주세요. 왜나면 위의 리눅스 명령어가 먼저 막대기호 하나를 사이에 두고 두 코퍼스를 합친 후에 막대기호 하나를 세 개로 바꾸는 명령어이기 때문입니다. 만약 원래 코퍼스에 막대기호가 있었다면 그 문장에는 두 개 이상의 삼 막대기호``|||``가 생겨서 정확한 alignment를 얻을 수 없습니다. )
 
 ```
 !/content/fast_align/build/fastalign -i source_target_file -d -o -v > source_target_file.align
-
 ```
+
 생성된 source_target_file을 입력으로 하여 source_target_file.align 파일을 생성할 수 있습니다.
 생성된 파일은 source-to-target 방향의 alignment 입니다.
 역방향의 alignment를 구하고 싶다면 -r을 추가해주세요.
