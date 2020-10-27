@@ -35,7 +35,7 @@ I like programming and singing.
 
 ## Resume
 
-[English]({{ 'assets/NLP_engineer_jeonghyeokpark_english_2020_10_22.pdf' | relative_url }})   
-[Chinese]({{ 'assets/NLP_engineer_jeonghyeokpark_chinese_2020_10_22.pdf' | relative_url }}) 
+[English]({{ 'assets/NLP_engineer_jeonghyeokpark_english.pdf' | relative_url }})   
+[Chinese]({{ 'assets/NLP_engineer_jeonghyeokpark_chinese.pdf' | relative_url }}) 
 
 ---
