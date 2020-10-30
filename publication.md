@@ -12,7 +12,7 @@ published: true
 
 #### Korean Neural Machine Translation Using Hierarchical Word Structure 
 Jeonghyeok Park and Hai Zhao. International Conference on Asian Language Processing (IALP 2020)  
-[PDF] 
+[PDF]({{ 'assets/2020ialp.pdf' | relative_url }}) 
 
 #### Collaborative Anomaly Detection for Internet of Things based on Federated Learning  
 Seongwoo Kim, He Cai, Cunqing Hua, Pengwenlong Gu, Wenchao Xu, Jeonghyeok Park. IEEE International Conference on Communication in China. August 09-11, 2020.  
