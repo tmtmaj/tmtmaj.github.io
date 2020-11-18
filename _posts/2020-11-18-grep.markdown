@@ -97,7 +97,7 @@ Can I just show you my ticket to the movie theater?
 #### 1. 파일 내부에 @ 문자의 유무 확인, 있다면 몇번째 줄에 있는지 출력
 
 ```
-! **grep** -n "@" /content/test
+!grep -n "@" /content/test
 ```
 
 test 파일에는 @ 을 포함한 문장이 없으니 출력되는 값도 없습니다.
@@ -107,11 +107,11 @@ test 파일에는 @ 을 포함한 문장이 없으니 출력되는 값도 없습
 #### 2. 정규표현식을 사용한 숫자가 포함된 문장 출력
 
 ```
-! **grep** "[0-9]" /content/test
+!grep "[0-9]" /content/test
 
 >> 1234 one two three four
 
-! **grep** -F "[0-9]" /content/test 
+!grep -F "[0-9]" /content/test 
 
 >>
 ```
@@ -125,7 +125,7 @@ test 파일에는 @ 을 포함한 문장이 없으니 출력되는 값도 없습
 #### 3. "dogs"라는 단어가 포함된 문장이 포함된 파일과 함께 출력하여 저장
 
 ```
-! **grep** -H "dogs" > /content/dogs
+!grep -H "dogs" > /content/dogs
 ```
 
 dogs라는 파일이 content 디렉토리에 생성됨
@@ -136,25 +136,25 @@ test:And I'll send you a picture of me and my dogs.
 ```
 #### 4. 디렉토리 내부의 모든 문서에 대해 word 단위로 서치 (공백을 기준으로 word 판단)
 ```
-! **grep** -w "dogs" *
+!grep -w "dogs" *
 
 >> And I'll send you a picture of me and my dogs.
 ```
 #### 5. 디렉토리 내부의 .exe 파일을 모두 서치
 ```
-! **grep** *.exe
+!grep *.exe
 ```
 .exe 파일이 존재하지 않음으로 출력되지 않습니다.
 
 #### 6. 현재 디렉토리부터 서브 디렉토리까지 모두 서치, 파일명과 함께 출력
 ```
-! **grep** -Hr "dogs" *
+!grep -Hr "dogs" *
 
 >> test:And I'll send you a picture of me and my dogs.
 ```
 #### 7. 서버에서 현재 python 파일을 실행하고 있는지 확인. 실행하고 있다면 실행하는
 ```
-!ps -ef| **grep** p​ython
+!ps -ef| grep p​ython
 ```
 
 이상 제가 자주 사용하는  **grep** 명령어였습니다.
