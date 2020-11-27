@@ -1,0 +1,250 @@
+---
+title: "﻿[Pytorch] 신경망 모델 훈련 중 특정 레이어 프리징하는 방법 How to freeze a specific layer in a neural model at training-time?﻿"
+layout: post
+author: Jeonghyeok Park
+categories: Pytorch
+tags: Pytorch
+---
+
+﻿
+
+안녕하세요.
+
+이번 포스팅은 신경망 모델 훈련 중에 특정 레이어를 프리징하는 방법에 대해 알려드리고자 합니다.
+
+### 프리징(Freezing)은 뭘까요?
+
+영어 단어 그 자체의 의미는 "얼리다"이지만 신경망 모델, 딥러닝에서는 모델이나 모듈의 파라미터를 모델 트레이닝 동안 고정하는 것을 의미합니다.
+즉, 모델의 train step을 진행해도 프로그래머가 특정한 모델이나 모듈의 파라미터(weight or bias or both)는 변하지 않는 것입니다.
+
+### 왜? 프리징이 필요할까?
+
+다양한 이유가 있을 수 있지만, 훈련이 완료된 모델(A) 위에 새로운 모듈(B)을 올릴 때 훈련이 완료된 모델의 파라미터(A's parameter)를 그대로 유지해야하거나 하고 싶을 경우를 대표적으로 들 수 있습니다.
+왜 모델 A의 파라미터를 그대로 유지하려할까요?
+
+제가 생각하기에 가장 큰 이유는 모델 A가 너무 무겁고 커서 훈련에 넣으면 OOM 문제가 발생하거나 훈련 속도가 너무 느려지기 때문입니다. 둘째로는 모델 A가 훈련이 이미 잘 되었고, 모듈 B와 동시에 훈련하는 경우 오히려 잘 훈련된 모델 A의 파라미터들이 안 좋은 방향으로 훈련된 염려가 있기 때문입니다.
+사실, 일반적으로 새로운 모듈을 위에 올리는 것은 새로운 테스크에 적용하기 위함입니다. 다른 데이터 셋이나 다른 목적으로 훈련된 A 모델도 새로운 모듈 B와 함께 새로운 데스크에 맞춰 약간 수정하는 것이 좋은 경우도 있습니다. (프리징을 하지 않고 A 모델 역시 B 모델과 함께(Jointly) 훈련)
+
+저는 최근 BERT, XL-net등 Pre-training Language Model(이하 PrLM)의 출력을 Transformer에 융합하는 방법들에 대한 논문을 읽고 재현 중에 있습니다. SKTbrain에서 제공하는 KoBERT을 사용하여 Korean-to-English translation의 성능을 향상시키는 방법을 재현 중입니다. (관련 논문 https://arxiv.org/abs/2002.06823)
+간단하게 말씀드리면 BERT 모델의 출력을 NMT에 융합하는 방법입니다. 첫 시도에서는 BERT 모델을 NMT 모델에 추가하고 훈련을 시작했습니다. 하지만 OOM 에러가 떴고 훈련은 진행이 되지만 훈련 속도가 vanilla Transformer에 비해 5분의 1 정도로 줄어들었습니다. 
+(Model training env - Google colab Pro -V100) 그래서 BERT 모델은 프리징하고 NMT 모델의 파라미터만 훈련하는 방식으로 바꾸었습니다. 그래도 훈련 속도가 약간은 늦춰지더라구요. 
+(훈련 데이터는 0.8M, Transformer는 6 stacked encoder, decoder, model dim 512) Vanilla Transformer의 경우 한 epoch에 15분 정도였다면 BERT 모델을 추가하면 한 epoch에 30분 이내로 걸립니다.
+저 같은 경우는 GPU 자원도 부족하고 훈련 결과를 빨리 확인하고 싶은지라 BERT 모델 파라미터를 프리징하는 방법을 선택했습니다.
+
+### In Pytorch, how to freeze a specific model in a neural model at train-time?
+
+구글링을 통해 찾아본 결과, 여러 방법들이 있었습니다. 설명은 이해했지만 보면 볼수록 헷갈리더라구요. 그래서 코드와 함께 정리하려합니다. 실행 환경은 Python 3.6.9, Pytorch 1.7 (gpu) 입니다.
+
+```
+﻿import torch
+from torch import nn
+from torch.autograd import Variable
+import torch.nn.functional as F
+import torch.optim as optim
+from  torch.nn import Parameter
+
+
+# toy feed-forward net
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+
+        self.fc1 = nn.Linear(10,3)
+        self.fc2 = nn.Linear(3, 3)
+        self.fc3 = nn.Linear(3, 3)        
+        self.fc4 = nn.Linear(3, 3)
+        self.fc5 = nn.Linear(3, 1)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.fc2(x)
+        x = self.fc3(x)
+        x = self.fc4(x)
+        x = self.fc5(x)
+        return x
+
+
+net = Net()
+# print the pre-trained fc2 weight
+print('fc2 pretrained parameter')
+pretrained_fc2_weight = Parameter(torch.rand(3, 3))
+pretrained_fc2_bias = Parameter(torch.rand(3))
+print(pretrained_fc2_weight, '\n', pretrained_fc2_bias)
+net.fc2.weight = pretrained_fc2_weight
+net.fc2.bias = pretrained_fc2_bias
+net.cuda()
+
+# define new random data (input&label)
+random_input = Variable(torch.randn(10,)).cuda()
+random_target = Variable(torch.randn(1,)).cuda()
+
+# loss
+criterion = nn.MSELoss()
+
+# optimizer
+optimizer = optim.Adam(net.parameters(), lr=0.1)
+# optimizer = optim.Adam(filter(lambda p: p.requires_grad, net.parameters()), lr=0.1)
+
+
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+for epoch in range(1,10):
+    net.zero_grad()
+
+    if epoch <4:
+      for name, param in net.named_parameters():
+          if name.count("fc2"): # freezing second layer
+              param.requires_grad = False  
+    else:
+      for name, param in net.named_parameters():
+        param.requires_grad = True # unfreezing second layer
+
+                
+    print("-"*89)
+    print('trainable parameters', count_parameters(net))
+    output = net(random_input)
+    loss = criterion(output, random_target)
+    loss.backward()
+    optimizer.step()
+    print('fc2 parameter at epoch:', epoch)
+    print(net.fc2.weight)
+    print(net.fc2.bias) 
+```
+
+﻿
+
+linear layer 5개로 이루어진 간단한 모델입니다. 목표는 3 epoch (총 10 epoch) 까지 모델의 2번째 linear layer를 프리징하는 것입니다.
+코드를 실행시키시면, 다음과 같은 출력문이 됩니다.
+﻿
+
+
+```
+fc2 pretrained parameter
+Parameter containing:
+tensor([[0.2112, 0.5270, 0.4704],
+        [0.8454, 0.2974, 0.9276],
+        [0.2952, 0.2069, 0.9233]], requires_grad=True) 
+ Parameter containing:
+tensor([0.4146, 0.2781, 0.4369], requires_grad=True)
+-----------------------------------------------------------------------------------------
+trainable parameters 61
+fc2 parameter at epoch: 1
+Parameter containing:
+tensor([[0.2112, 0.5270, 0.4704],
+        [0.8454, 0.2974, 0.9276],
+        [0.2952, 0.2069, 0.9233]], device='cuda:0')
+Parameter containing:
+tensor([0.4146, 0.2781, 0.4369], device='cuda:0')
+-----------------------------------------------------------------------------------------
+trainable parameters 61
+fc2 parameter at epoch: 2
+Parameter containing:
+tensor([[0.2112, 0.5270, 0.4704],
+        [0.8454, 0.2974, 0.9276],
+        [0.2952, 0.2069, 0.9233]], device='cuda:0')
+Parameter containing:
+tensor([0.4146, 0.2781, 0.4369], device='cuda:0')
+-----------------------------------------------------------------------------------------
+trainable parameters 61
+fc2 parameter at epoch: 3
+Parameter containing:
+tensor([[0.2112, 0.5270, 0.4704],
+        [0.8454, 0.2974, 0.9276],
+        [0.2952, 0.2069, 0.9233]], device='cuda:0')
+Parameter containing:
+tensor([0.4146, 0.2781, 0.4369], device='cuda:0')
+-----------------------------------------------------------------------------------------
+trainable parameters 73
+fc2 parameter at epoch: 4
+Parameter containing:
+tensor([[0.1112, 0.6270, 0.5704],
+        [0.7454, 0.3974, 1.0276],
+        [0.1953, 0.3069, 1.0233]], device='cuda:0', requires_grad=True)
+Parameter containing:
+tensor([0.3146, 0.1781, 0.3369], device='cuda:0', requires_grad=True)
+-----------------------------------------------------------------------------------------
+trainable parameters 73
+fc2 parameter at epoch: 5
+Parameter containing:
+tensor([[0.0317, 0.6972, 0.6423],
+        [0.6659, 0.4676, 1.0995],
+        [0.1175, 0.3767, 1.0945]], device='cuda:0', requires_grad=True)
+Parameter containing:
+tensor([0.2413, 0.1047, 0.2644], device='cuda:0', requires_grad=True)
+-----------------------------------------------------------------------------------------
+```
+
+﻿
+
+10 epoch까지이지만 중간에 짤랐습니다.
+간단히 설명드리면, 가장 처음에 출력된 내용은 pre-trained(위 예시에서는 랜덤값으로 직접 설정했지만 pre-trained된 파라미터라 가정) fc2 layer의 파라미터를 출력합니다. 할당된 파라미터의 requires_grad는 True입니다. 즉, 모델 트레이닝 동안 gradient를 저장한다는 것입니다.
+점선을 구분으로하여 두번째 출력된 내용은 fc2 layer의 parameter (weight, bias)의 requires_grad를 False로 설정한 후 출력된 내용입니다. Parameter 출력문을 보시면 requires_grad=True가 첫번째 출력 내용과 달리 없는 것을 확인할 수 있고, 파라미터가 업데이트되지 않았습니다. 
+3 epoch까지 그대로 유지됩니다.
+그리고 4 epoch부터 fc2 layer의 require_grad를 True로 설정하여(코드에서는 전체를 True로 설정) fc2 layer의 parameter가 업데이트되는 것을 확인할 수 있습니다.
+각 epoch의 출력문의 가장 위에 trainable parameter 수를 출력하는 부분이 있는데, 1~3 epoch 동안은 61로 fc2 layer의 weight (9) + fc2 layer의 bias (3) = 12가 trainable paramter에서 빠져있음을 확인할 수 있습니다.
+
+파라미터를 프리징하는 핵심 코드는 다음과 같습니다.
+
+
+```
+if epoch <4:
+    for name, param in net.named_parameters():
+        if name.count("fc2"): # freezing second layer
+            param.requires_grad = False  
+ else:
+    for name, param in net.named_parameters():
+        param.requires_grad = True # unfreezing second layer
+```
+
+﻿
+
+특정 parameter의 requires_grad를 False로 설정해주면 그 파라미터는 training 동안 업데이트되지 않습니다.
+
+### train.eval() & with torch.no_grad()
+
+여러 자료를 보다보니 train.eval()과 with torch.no_grad()가 파라미터 프리징과 관련하여 함께 검색되는 것 같아 같이 정리합니다.
+train.eval()과 with torch.no_grad()는 거의 항상 같이 쓰입니다. (왜 따로 구현했는지 의문이..)
+
+**model.eval()** will notify all your layers that you are in eval mode, that way, batchnorm or dropout layers will work in eval mode instead of training mode.  
+**torch.no_grad()** impacts the autograd engine and deactivate it. It will reduce memory usage and speed up computations but you won’t be able to backprop (which you don’t want in an eval script).
+
+pytorch forum의 질문글에 대한 답변인데, 명확하고 딱 요점만 정리되어 있어 가져왔습니다.
+첨언을 하자면, model.eval()은 require_grad에 영향을 미치지 않습니다. 즉, model의 evaluation mode를 설정해도 파라미터는 업데이트됩니다. 단지 dropout, batchnorm 같은 레이터를 disable하는 역할을 합니다.
+
+아래 코드를 돌려보시면 바로 아실 수 있습니다.
+﻿
+```
+import torch.nn as nn
+
+drop = nn.Dropout()
+x = torch.ones(1, 10)
+
+#Train mode (default after construction)
+drop.train()
+print(drop(x))
+
+#Eval mode
+drop.eval()
+print(drop(x))
+```
+
+﻿
+
+with torch.no_grad() 이하에 작성된 모델의 require_grad는 전부 False로 설정됩니다. 즉, 파라미터 업데이트가 진행되지 않습니다.
+이번 포스팅은 여기까지입니다.
+
+토론은 언제든지 환영입니다! 
+
+감사합니다.
+
+---
+﻿
+참고 자료:
+﻿
+
+https://discuss.pytorch.org/t/how-the-pytorch-freeze-network-in-some-layers-only-the-rest-of-the-training/7088
+
+https://discuss.pytorch.org/t/model-eval-vs-with-torch-no-grad/19615/8
+﻿
+
