@@ -1,0 +1,73 @@
+---
+title: "﻿[Pytorch] RuntimeError: received 0 items of ancdata 해결 방법"
+layout: post
+author: Jeonghyeok Park
+categories: Pytorch
+tags: Pytorch
+---
+
+
+﻿
+
+안녕하세요.
+
+이번 포스팅에서 알려드릴 내용은 Pytorch의 dataloader에서 발생할 수 있는 에러에 대한 해결 방법을 알려드리려합니다.
+저는 fairseq-py로 NMT model을 훈련하다가 이 error가 발생해서 구글링했습니다.
+
+**RuntimeError: received 0 items of ancdata**
+
+pytorch의 dataloader가 data를 받아오는 과정에서 발생하는 에러인데요. subprocess들이 tensor를 공유하는 과정은 'open files'로 진행됩니다.
+open files의 제한이 있을 경우 이 에러가 발생할 수 있습니다.
+
+linux 시스템에서 `ulimit -a` 명령어로 open files의 제한을 확인할 수 있습니다.
+﻿
+```
+>ulimit -a
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 50853
+max locked memory       (kbytes, -l) 64
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 50853
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+```
+
+﻿
+
+#### 해결 방법 (3가지)
+
+- open files의 제한을 늘리는 방법
+
+```
+sudo sh -c "ulimit -n 65535 && exec su $LOGNAME"
+```
+
+- 코드에서 torch import 후 그 아래에 다음 코드 추가
+
+```
+torch.multiprocessing.set_sharing_strategy('file_system')
+```
+
+- num-workers = 0 으로 설정
+
+저는 이 방법으로 해결했습니다. fairseq-py command 중 --num-workers 의 디폴트 값이 1인데 0으로 수정하면 됩니다.
+
+﻿
+![]({{ site.baseurl }}/assets/pytorch2_1.png )
+﻿
+
+이번 포스팅은 여기까지입니다.
+
+감사합니다.
+﻿
+
+
