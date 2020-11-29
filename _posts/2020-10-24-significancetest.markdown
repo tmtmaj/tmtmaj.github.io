@@ -1,5 +1,5 @@
 ---
-title: "[TIP] ﻿기계 번역을 위한 유의성 검정 (significance test for machine translation)"
+title: "[NLP] ﻿기계 번역을 위한 유의성 검정 (significance test for machine translation)"
 layout: post
 author: Jeonghyeok Park
 categories: Natural-Language-Processing
