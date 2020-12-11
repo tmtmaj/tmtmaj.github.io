@@ -1,0 +1,280 @@
+---
+title: "﻿﻿[Python] 파이썬 함수 getattr, setattr, hasattr, delattr 사용법 및 예시﻿"
+layout: post
+author: Jeonghyeok Park
+categories: Python
+tags: Python
+---
+
+﻿﻿
+
+안녕하세요.  
+이번 포스팅에서 소개해드릴 것은 python에서 자주 사용하는 **getattr, setattr, hasattr, delattr** 입니다.  
+object와 attribute에 대한 처리가 필요할 때 사용하실 수 있습니다.
+
+사용 예로는, 딥러닝 모델의 config를 일반적으로 object의 변수로 설정하여 받아오는 경우가 많습니다. Opennmt, fairseq 처럼 큰 오픈 프로젝트의 경우 안에 다양한 딥러닝 모델이 있다보니 config를 변경하여 모델을 설정합니다. 코드 내부에서 config를 변경 및 확인 등의 작업을 할 때, 일반적으로
+**getattr, hasattr, setattr, delattr**를 사용합니다.
+
+---
+
+﻿실행 환경 (Google colab pro)
+
+```
+Python 3.6.9
+NAME="Ubuntu"
+VERSION="18.04.5 LTS (Bionic Beaver)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04.5 LTS"
+VERSION_ID="18.04"
+```
+ 
+---
+
+### ﻿1. getattr()
+
+
+기본 형식은 다음과 같습니다.
+
+`getattr(object, attribute_name [, default])`
+
+```
+getattr(...)
+    getattr(object, name[, default]) -> value
+    
+    Get a named attribute from an object; getattr(x, 'y') is equivalent to x.y.
+    When a default argument is given, it is returned when the attribute doesn't exist; without it, an exception is raised in that case.
+```
+
+object 안에 찾고자하는 attribute의 값을 출력합니다. (만약 없을 경우 default이 출력됩니다.)
+
+예시입니다.
+
+```
+class Employee:
+  emp_comp = "Amazon"
+  emp_age = 30
+  default_age = 50
+
+  def defaultMethod(self):
+    print("This is a default method")
+
+e = Employee()
+print(getattr(e, 'emp_age'))            # e 에 emp_age 라는 attribute가 있는지? 있다. 30 출력
+print(getattr(e, 'emp_age', 45))          # e 에 emp_age 라는 attribute가 있는지? 있다. 30 출력, 45 [default] 무시
+print(getattr(e, 'emp_age_other', 45))       # e 에 emp_age_other 라는 attribute가 있는지? 없다. 45 [default] 출력
+print(getattr(e, 'emp_age_other', e.default_age))  # e 에 emp_age_other 라는 attribute가 있는지? 없다. e.default_age [default] 출력 
+                            # e.default_age의 값이 return
+```                            
+``` 
+30
+30
+45
+50
+``` 
+
+---
+
+### 2. setattr()
+
+기본 형식은 다음과 같습니다.
+
+`setattr(object, attribute_name, value)`
+
+```
+setattr(obj, name, value, /)
+    Sets the named attribute on the given object to the specified value.
+    
+    setattr(x, 'y', v) is equivalent to ``x.y = v''
+```
+
+object에 새로운 attribute를 추가하고 값은 value를 줍니다.
+
+
+예시입니다.
+﻿
+```
+class Employee:
+  emp_comp = "Amazon"
+  emp_age = 30
+  default_age = 50
+
+  def defaultMethod(self):
+    print("This is a default method")
+    
+e = Employee()
+
+print(getattr(e, 'emp_age'))            # e 에 emp_age 라는 attribute가 있는지? 있다. 30 출력
+setattr(e, 'emp_age', 100)            # setattr를 통해 emp_age를 100으로 변경 
+print(getattr(e, 'emp_age', 45))          # e 에 emp_age 라는 attribute가 있는지? 있다. 30 출력, 45 [default] 무시
+
+setattr(e, 'emp_sex', "man")            # setattr를 통해 emp_sex 생성 및 man 입력
+print(getattr(e, 'emp_sex', 'woman'))      # e 에 emp_sex 라는 attribute가 있는지? 있다. man 출력, woman 무시
+```
+
+```
+30
+100
+man
+```
+
+--- 
+
+### ﻿3. hasattr()
+
+기본 형식은 다음과 같습니다.
+
+`hasattr(object, attribute_name)`
+
+```
+hasattr(obj, name, /)
+    Return whether the object has an attribute with the given name.
+    
+    This is done by calling getattr(obj, name) and catching AttributeError.
+```
+
+object에 attribute_name이 있는지 확인합니다.
+그리고 True or False를 출력합니다.
+﻿
+
+예시입니다.
+
+```
+class Employee:
+  emp_comp = "Amazon"
+  emp_age = 30
+  default_age = 50
+
+  def defaultMethod(self):
+    print("This is a default method")
+    
+e = Employee()
+e1 = Employee()
+
+print(hasattr(e, 'emp_address'))      # e 에 emp_address가 있는지? 없다. False
+setattr(e, 'emp_address', 'Korea')    # e 에 emp_address 생성 및 Korea 입력
+print(hasattr(e, 'emp_address'))      # e 에 emp_address가 있는지? 있다. True
+print(hasattr(e1, 'emp_address'))     # e1 에 emp_address가 있는지? 없다. False
+```
+
+```
+False
+True
+False
+```
+
+---
+
+### ﻿4. delattr()
+
+기본 형식은 다음과 같습니다.
+
+`delattr(object, attribute_name)`
+
+```
+delattr(obj, name, /)
+    Deletes the named attribute from the given object.
+    
+    delattr(x, 'y') is equivalent to ``del x.y''
+```    
+
+object 내부의 attribute_name와 같은 attribute를 삭제합니다.
+﻿
+
+예시입니다.
+
+```
+class Employee:
+  emp_comp = "Amazon"
+  emp_age = 30
+  default_age = 50
+
+  def defaultMethod(self):
+    print("This is a default method")
+    
+e = Employee()
+e1 = Employee()
+
+print(hasattr(e, 'emp_comp'))      # e 에 emp_address가 있는지? 있다. True
+print(hasattr(e1, 'emp_comp'))      # e 에 emp_address가 있는지? 있다. True
+delattr(Employee, 'emp_comp')    # Employee에서 emp_comp 삭제
+print(hasattr(e, 'emp_comp'))      # e 에 emp_address가 있는지? 없다. False
+print(hasattr(e1, 'emp_comp'))      # e 에 emp_address가 있는지? 없다. False
+
+print(hasattr(e, 'emp_age'))      # e 에 emp_age가 있는지? 있다. True
+print(hasattr(e1, 'emp_age'))      # e 에 emp_age가 있는지? 있다. True
+del Employee.emp_age          # Employee에서 emp_age 삭제/delattr(Employee, 'emp_age')와 동일
+print(hasattr(e, 'emp_age'))      # e 에 emp_age가 있는지? 없다. False
+print(hasattr(e1, 'emp_age'))      # e 에 emp_age가 있는지? 없다. False
+
+```
+
+```
+True
+True
+False
+False
+True
+True
+False
+False
+```
+---
+
+참고로 dir() 명령어를 통해 해당 object의 전체 attribute를 확인할 수 있습니다.
+﻿
+```
+class Employee:
+  emp_comp = "Amazon"
+  emp_age = 30
+  default_age = 50
+
+  def defaultMethod(self):
+    print("This is a default method")
+
+dir(e)
+```
+
+```
+['__class__',
+ '__delattr__',
+ '__dict__',
+ '__dir__',
+ '__doc__',
+ '__eq__',
+ '__format__',
+ '__ge__',
+ '__getattribute__',
+ '__gt__',
+ '__hash__',
+ '__init__',
+ '__init_subclass__',
+ '__le__',
+ '__lt__',
+ '__module__',
+ '__ne__',
+ '__new__',
+ '__reduce__',
+ '__reduce_ex__',
+ '__repr__',
+ '__setattr__',
+ '__sizeof__',
+ '__str__',
+ '__subclasshook__',
+ '__weakref__',
+ 'defaultMethod',
+ 'default_age',
+ 'emp_age',
+ 'emp_comp']
+```
+
+이번 포스팅은 여기까지입니다.
+
+감사합니다.  
+﻿
+
+
+참고 자료: 
+
+﻿https://medium.com/@pranaygore/using-getattr-setattr-delattr-hasattr-in-python-6d79c6f9fda3
+

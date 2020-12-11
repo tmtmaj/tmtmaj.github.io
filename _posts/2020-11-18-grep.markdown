@@ -1,5 +1,5 @@
 ---
-title: "[NLP] 리눅스 명령어 grep의 사용법 (in google colab)"
+title: "[NLP] 자연어 처리를 위한 ﻿리눅스 명령어 grep의 사용법 (in google colab)"
 layout: post
 author: Jeonghyeok Park
 categories: Natural-Language-Processing
@@ -12,29 +12,47 @@ tags: Natural-Language-Processing
 안녕하세요.
 
 오늘 소개해드릴 리눅스 명령어는 **grep**입니다.
- **grep**은 Global Regular Expression Print의 약자입니다.
 
-Regular Expression 정규 표현식.. 예제로 보면 단순한데 막상 쓰려고 하면 어려운 처음에는 다 외우려고 했으나 그냥 필요할 때마다 찾아보고 있습니다.
+### grep : Global Regular Expression Print
+
+**Regular Expression** 정규 표현식.. 예제로 보면 단순한데 막상 쓰려고 하면 어려운 처음에는 다 외우려고 했으나 그냥 필요할 때마다 찾아보고 있습니다.
 grep은 디렉토리 내의 파일을 검색하거나 파일 내에서 본인이 찾고 싶은 문자열이나 정규 표현식을 포함하고 있는 line을 찾는 데에 주로 사용됩니다.
+
 예를 들면, 딥러닝의 꽃인 데이터를 모으로 정리하는 과정에서 가장 많이 활용될 법한 명령어죠.
 
-영어로 이루어진 단일 코퍼스에서 @ 달러 문자가 있는지 없는지 알고 싶다면  **grep**을 사용할 수 있죠.  
-혹은, 약 500만 문장이 포함된 한국어 코퍼스에서 "딥러닝"이 포함된 문장을 따로 뽑아 새로운 파일에 저장하고 싶다면  **grep**!  
-아니면, 숫자가 포함된 문장과 그 라인 번호를 알고 싶다면 역시  **grep**!  
-한 디렉토리에서 .py 파일을 찾고 싶다면  **grep**!  
+- 영어로 이루어진 단일 코퍼스에서 @ 달러 문자가 있는지 없는지 알고 싶다면  **grep**을 사용할 수 있죠.  
+- 혹은, 약 500만 문장이 포함된 한국어 코퍼스에서 "딥러닝"이 포함된 문장을 따로 뽑아 새로운 파일에 저장하고 싶다면  **grep**!  
+- 아니면, 숫자가 포함된 문장과 그 라인 번호를 알고 싶다면 역시  **grep**!  
+- 한 디렉토리에서 .py 파일을 찾고 싶다면  **grep**!  
 
 이외에도 활용도는 무수히 많습니다.
 굳이 다 외울 필요는 없고 한번 쯤 눈으로 보고 나중에 필요할 때 바로 기억해서 사용하지는 못하더라도 떠올리기만 한다면 최고죠.
 
 제가 자주 사용하는 것 몇가지 뽑아서 정리해드리겠습니다.
-모든 예시는 google colab에서 실행했습니다.
-linux 환경에서 사용하시는 분은 grep을 설치해주세요.
+
+모든 예시는 google colab pro에서 실행했습니다. linux 환경에서 사용하시는 분은 grep을 설치해주세요.
+
+------
+
+실행 환경
+
+```ABAP
+Python 3.6.9
+NAME="Ubuntu"
+VERSION="18.04.5 LTS (Bionic Beaver)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04.5 LTS"
+VERSION_ID="18.04"
+```
+
+------
 
 예시를 위해 활용할 test 문서입니다. 복사하셔서 파일을 생성해주세요.
 
-/content/test
+파일 저장 위치: /content/test 
 
-```
+```python
 And I'll send you a picture of me and my dogs.
 Part of profits are used for the comfort women, and it is holding various campaigns for them.
 I feel happy when people call me cheetah because they are using a nickname based on something that I am good at.
@@ -62,9 +80,11 @@ Can I just show you my ticket to the movie theater?
 1234 one two three four
 ```
 
+------
+
 ### grep의 기본 형식
 
-```
+```python
  grep [options] pattern [file]
         -E        : PATTERN을 확장 정규 표현식(Extended RegEx)으로 해석.
         -F        : PATTERN을 정규 표현식(RegEx)이 아닌 일반 문자열로 해석.
@@ -92,7 +112,10 @@ Can I just show you my ticket to the movie theater?
 더 자세한 option은  ``grep -help``에서 확인하실 수 있습니다.
 
 ``options``라고 표현한 이유는 여러가지 옵션을 함께 사용할 수 있기 때문입니다.
+
 예시와 함께 알려드리겠습니다.
+
+------
 
 #### 1. 파일 내부에 @ 문자의 유무 확인, 있다면 몇번째 줄에 있는지 출력
 
@@ -103,6 +126,8 @@ Can I just show you my ticket to the movie theater?
 test 파일에는 @ 을 포함한 문장이 없으니 출력되는 값도 없습니다.
 
 저같은 경우에는 어떤 특정 문자를 split delimiter (구분자)로 사용하는 경우가 종종 있는데, 파일 내부에 이미 제가 지정한 구분자가 있다면 나중에 split 시에 데이터가 손상되는 것을 방지하기 위해  **grep**으로 확인합니다.
+
+------
 
 #### 2. 정규표현식을 사용한 숫자가 포함된 문장 출력
 
@@ -122,6 +147,8 @@ test 파일에는 @ 을 포함한 문장이 없으니 출력되는 값도 없습
 
 [0-9]라는 문자열이 포함된 라인이 없으므로 출력되는 값은 없습니다.
 
+------
+
 #### 3. "dogs"라는 단어가 포함된 문장이 포함된 파일과 함께 출력하여 저장
 
 ```
@@ -134,17 +161,23 @@ dogs라는 파일이 content 디렉토리에 생성됨
 ```
 test:And I'll send you a picture of me and my dogs.
 ```
+------
+
 #### 4. 디렉토리 내부의 모든 문서에 대해 word 단위로 서치 (공백을 기준으로 word 판단)
 ```
 !grep -w "dogs" *
 
 >> And I'll send you a picture of me and my dogs.
 ```
+------
+
 #### 5. 디렉토리 내부의 .exe 파일을 모두 서치
 ```
 !grep *.exe
 ```
 .exe 파일이 존재하지 않음으로 출력되지 않습니다.
+
+------
 
 #### 6. 현재 디렉토리부터 서브 디렉토리까지 모두 서치, 파일명과 함께 출력
 ```
@@ -152,10 +185,14 @@ test:And I'll send you a picture of me and my dogs.
 
 >> test:And I'll send you a picture of me and my dogs.
 ```
+------
+
 #### 7. 서버에서 현재 python 파일을 실행하고 있는지 확인. 실행하고 있다면 실행하는
 ```
-!ps -ef| grep p​ython
+!ps -ef| grep python
 ```
+
+------
 
 이상 제가 자주 사용하는  **grep** 명령어였습니다.
 
