@@ -28,7 +28,7 @@ ID_LIKE=debian
 PRETTY_NAME="Ubuntu 18.04.5 LTS"
 VERSION_ID="18.04"
 ```
- 
+
 ---
 
 ### ﻿1. getattr()
@@ -50,6 +50,8 @@ object 안에 찾고자하는 attribute의 값을 출력합니다. (만약 없�
 
 예시입니다.
 
+[Code]
+
 ```
 class Employee:
   emp_comp = "Amazon"
@@ -65,13 +67,15 @@ print(getattr(e, 'emp_age', 45))          # e 에 emp_age 라는 attribute가 �
 print(getattr(e, 'emp_age_other', 45))       # e 에 emp_age_other 라는 attribute가 있는지? 없다. 45 [default] 출력
 print(getattr(e, 'emp_age_other', e.default_age))  # e 에 emp_age_other 라는 attribute가 있는지? 없다. e.default_age [default] 출력 
                             # e.default_age의 값이 return
-```                            
+```
+[Output]
+
 ``` 
 30
 30
 45
 50
-``` 
+```
 
 ---
 
@@ -90,9 +94,9 @@ setattr(obj, name, value, /)
 
 object에 새로운 attribute를 추가하고 값은 value를 줍니다.
 
-
 예시입니다.
-﻿
+﻿[Code]
+
 ```
 class Employee:
   emp_comp = "Amazon"
@@ -112,13 +116,15 @@ setattr(e, 'emp_sex', "man")            # setattr를 통해 emp_sex 생성 및 m
 print(getattr(e, 'emp_sex', 'woman'))      # e 에 emp_sex 라는 attribute가 있는지? 있다. man 출력, woman 무시
 ```
 
+[Output]
+
 ```
 30
 100
 man
 ```
 
---- 
+---
 
 ### ﻿3. hasattr()
 
@@ -139,6 +145,8 @@ object에 attribute_name이 있는지 확인합니다.
 
 예시입니다.
 
+[Code]
+
 ```
 class Employee:
   emp_comp = "Amazon"
@@ -156,6 +164,8 @@ setattr(e, 'emp_address', 'Korea')    # e 에 emp_address 생성 및 Korea 입�
 print(hasattr(e, 'emp_address'))      # e 에 emp_address가 있는지? 있다. True
 print(hasattr(e1, 'emp_address'))     # e1 에 emp_address가 있는지? 없다. False
 ```
+
+[Output]
 
 ```
 False
@@ -176,12 +186,14 @@ delattr(obj, name, /)
     Deletes the named attribute from the given object.
     
     delattr(x, 'y') is equivalent to ``del x.y''
-```    
+```
 
 object 내부의 attribute_name와 같은 attribute를 삭제합니다.
 ﻿
 
 예시입니다.
+
+[Code]
 
 ```
 class Employee:
@@ -209,6 +221,8 @@ print(hasattr(e1, 'emp_age'))      # e 에 emp_age가 있는지? 없다. False
 
 ```
 
+[Output]
+
 ```
 True
 True
@@ -223,6 +237,9 @@ False
 
 참고로 dir() 명령어를 통해 해당 object의 전체 attribute를 확인할 수 있습니다.
 ﻿
+
+[Code]
+
 ```
 class Employee:
   emp_comp = "Amazon"
@@ -234,6 +251,8 @@ class Employee:
 
 dir(e)
 ```
+
+[Output]
 
 ```
 ['__class__',

@@ -1,0 +1,165 @@
+---
+title: "﻿﻿﻿[Python] 딕셔너리 수정 중 발생하는 에러 및 해결 방법 RuntimeError: * during iteration﻿﻿"
+layout: post
+author: Jeonghyeok Park
+categories: Python
+tags: Python
+---
+
+﻿
+
+안녕하세요.
+
+Python에서 dict (dictionary)를 수정하는 중에 발생할 수 있는 에러를 해결하는 방법에 대해 소개해드리겠습니다.
+
+### ﻿How to solve "RuntimeError: * during iteration" in python?
+
+---
+
+먼저 어떤 에러가 발생할 수 있는지 여러 dictionary로 재현해보겠습니다.
+
+하고자 하는 task는 딕셔너리의 "key2"인 key를 삭제하는 것입니다. "key1", "key2", "key3"를 dict에 넣고 "key2"를 삭제하면 기대되는 아웃풋은 "key1", "key3"만 남은 dict입니다.
+
+---
+
+**재현 1 (dict)**
+
+[Code]
+
+```
+dictionary = {"key1":1, "key2":2, "key3":3}
+
+for key in dictionary.keys():
+    if "key2" in key:
+        del(dictionary[key])        
+```
+
+[Output]
+
+```
+---------------------------------------------------------------------------
+RuntimeError                              Traceback (most recent call last)
+<ipython-input-91-ca7288b8a62c> in <module>
+      1 dictionary = {"key1":1, "key2":2, "key3":3}
+      2 
+----> 3 for key in dictionary.keys():
+      4     if "key2" in key:
+      5         del(dictionary[key])
+
+RuntimeError: dictionary changed size during iteration
+```
+
+﻿**재현 2 (defaultdict)**
+
+[Code]
+
+```
+from collections import defaultdict 
+
+dictionary = defaultdict() 
+dictionary["key1"] = 1
+dictionary["key2"] = 2
+dictionary["key3"] = 3
+
+for key in dictionary.keys():
+    if "key2" in key:
+        dictionary.pop(key)
+```
+
+[Output]
+
+```
+---------------------------------------------------------------------------
+RuntimeError                              Traceback (most recent call last)
+<ipython-input-92-38c7499c969a> in <module>
+      6 dictionary["key3"] = 3
+      7 
+----> 8 for key in dictionary.keys():
+      9     if "key2" in key:
+     10         dictionary.pop(key)
+
+RuntimeError: dictionary changed size during iteration
+```
+
+﻿**재현 3 (OrderedDict)**
+
+[Code]
+
+```
+from collections import OrderedDict 
+
+dictionary = OrderedDict() 
+dictionary["key1"] = 1
+dictionary["key2"] = 2
+dictionary["key3"] = 3
+
+for key in dictionary.keys():
+    if "key2" in key:
+        del(dictionary[key])
+```
+
+[Output]
+
+```
+---------------------------------------------------------------------------
+RuntimeError                              Traceback (most recent call last)
+<ipython-input-93-c8006cf54e87> in <module>
+      6 dictionary["key3"] = 3
+      7 
+----> 8 for key in dictionary.keys():
+      9     if "key2" in key:
+     10         del(dictionary[key])
+
+RuntimeError: OrderedDict mutated during iteration
+```
+
+3가지 dict에서 발생할 수 있는 같은 형태의 error를 재현했습니다.
+
+에러는 dict가 반복 실행에서 변경되어 발생하는 에러입니다. 즉 반복 실행 입장에서는 "key2"가 dict에 있어야 하는데 없다는 겁니다.
+
+해결 방법은 copy()를 사용하는 것입니다. 반복 실행에 입력되는 dict을 복사하여 기존 dict이 수정되더라도 반복 실행에서는 문제가 발생하지 않습니다.
+
+------
+
+### ﻿해결 방법
+
+d﻿ictionary를 copy()를 통해 복사하여 반복 실행에 넣어주었고, for문 이하에서 dictionary가 수정되어도 반복 실행의 dictionary와는 전혀 관계가 없죠. 따라서 정상적으로 동작하게 됩니다.
+
+[Code]
+
+```
+from collections import defaultdict 
+
+dictionary = defaultdict() 
+dictionary["key1"] = 1
+dictionary["key2"] = 2
+dictionary["key3"] = 3
+
+for key in dictionary.copy().keys(): # copy() 추가
+    if "key2" in key:
+        dictionary.pop(key)
+        
+print(dictionary)
+```
+
+[Output]
+
+```
+defaultdict(None, {'key1': 1, 'key3': 3})
+```
+
+------
+
+### **고찰**
+
+제가 이 에러를 맞닥뜨린 부분은 신경망 모델을 저장하는 부분에서 특정 layer를 저장할 필요가 없고, 용량이 꽤 크기 때문에 그 특정 layer를 삭제하려했습니다. 
+
+일반적으로 pytorch에서 model.state_dict()을 통해 모델의 파라미터를 dict의 형태로 받아오고 저장합니다. 저장하기  전에 특정 레이어를 제거하려했더니 RuntimeError: * during iteration 가 발생했습니다. copy()를 통해 간단히 해결할 수 있었습니다. 
+
+
+
+이번 포스팅은 여기까지 입니다.
+
+
+
+감사합니다.

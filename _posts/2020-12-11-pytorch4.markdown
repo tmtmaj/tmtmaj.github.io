@@ -69,6 +69,8 @@ VERSION_ID="18.04"
 
 그럼 작고 아름다운 모델을 구축하겠습니다.  
 
+[Code]
+
 ```python
 import torch
 from torch import nn
@@ -140,7 +142,9 @@ torch.save(net.state_dict(), "/content/net.pt")
 (주의하실 점은 fc3, fc4를 추가하여 새로운 모델로 사용할 것이기 때문에 fc3과 fc4를 모델에서 주석 처리하여 뺏습니다.) 
 그리고 모델을 훈련 및 저장합니다. 그대로 코드를 실행하신다면 저장 루트를 바꿔주세요.
 
-```pseudocode
+[Output]
+
+```
 fc1 parameter before model training (initializing)
 net.fc1.weight:  Parameter containing:
 tensor([[ 0.2413,  0.1984, -0.1557,  0.2183, -0.0026,  0.2063,  0.0356,  0.2401,
@@ -170,11 +174,15 @@ fc1의 parameter를 출력했습니다.
 
 저장된 모델을 출력해보겠습니다.
 
+[Code]
+
 ```python
 torch.load("/content/net.pt")
 ```
 
-```ABAP
+[Output]
+
+```
 OrderedDict([('fc1.weight',
               tensor([[-0.0752, -0.1181, -0.4722,  0.5348, -0.3191, -0.1102,  0.3521, -0.0764,
                        -0.2324,  0.3576],
@@ -201,6 +209,8 @@ fc1의 Parameter를 확인한 결과 잘 저장된 것을 알 수 있습니다.
 그럼 본격적으로 Net 모델에 새로운 모델을 추가해보겠습니다. 
 아까 fc3과 fc4에 걸어뒀던 주석을 풀고 새로운 모델 new_net을 생성 후 아까 저장해둔 net 모델을 load 합니다.
 
+[Code]
+
 ```python
 class Net(nn.Module):
     def __init__(self):
@@ -224,7 +234,9 @@ new_net = Net()
 new_net.load_state_dict(torch.load("/content/net.pt"))
 ```
 
-```ABAP
+[Output]
+
+```
 ---------------------------------------------------------------------------
 RuntimeError                              Traceback (most recent call last)
 <ipython-input-6-eeb026f923bc> in <module>()
@@ -257,17 +269,23 @@ load_state_dict의 strict를 False로 설정하면, 이 문제를 해결할 수 
 저장된 모델에서 keys가 일치하는 부분만 받아오고 나머지는 랜덤 초기화를 진행합니다.
 load_state_dict의 strict를 False로 설정합니다.
 
+[Code]
+
 ```python
 new_net.load_state_dict(torch.load("/content/net.pt"), strict=False)
 ```
 
-```ABAP
+[Output]
+
+```
 _IncompatibleKeys(missing_keys=['fc3.weight', 'fc3.bias', 'fc4.weight', 'fc4.bias'], unexpected_keys=[])
 ```
 
 에러는 아니지만 호환되지 않는 key가 있다는 메시지가 출력됩니다.
 
 그럼 new_net의 fc1과 fc3의 파라미터를 확인해보겠습니다.
+
+[Code]
 
 ```python
 print("fc1 parameter after loading model from the old one")
@@ -278,7 +296,9 @@ print("new_net.fc3.weight: ", new_net.fc3.weight)
 print("new_net.fc3.bias: ", new_net.fc3.bias) 
 ```
 
-```ABAP
+[Output]
+
+```
 fc1 parameter after loading model from the old one
 net.fc1.weight:  Parameter containing:
 tensor([[-0.0752, -0.1181, -0.4722,  0.5348, -0.3191, -0.1102,  0.3521, -0.0764,
