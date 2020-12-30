@@ -24,7 +24,7 @@ Jeonghyeok Park and Hai Zhao. 33rd Pacific Asia Conference on Language, Informat
 
 #### Real-time Recognition of Guitar Performance Using Two Sensor Groups for Interactive Lesson    
 Yejin Shin, Jemin Hwang, Jeonghyeok Park, and Soonuk Seol. TEI ‘18 Proceedings of the Twelfth International Conference on Tangible, Embedded, and embodied Interaction.  
-[PDF]  
+[PDF]({{ 'assets/real2018.pdf' | relative_url }}) 
 
 ---
 
