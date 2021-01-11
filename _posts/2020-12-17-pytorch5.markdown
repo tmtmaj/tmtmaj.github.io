@@ -80,6 +80,8 @@ B_embedding = torch.randn([4, 5, 3]) # batch_size, sequence length, embedding_di
 
 # ﻿Addition
 torch.add(A_embedding, B_embedding).shape
+
+# torch.sum(torch.stack(A_embedding, B_embedding),0) 과 같습니다.
 ```
 
 [Output]
@@ -104,6 +106,8 @@ B_embedding = torch.randn([4, 5, 3]) # batch_size, sequence length, embedding_di
 
 # ﻿Averaging
 (torch.add(A_embedding, B_embedding)/2).shape
+
+# torch.mean(torch.stack(A_embedding, B_embedding),0) 과 같습니다.
 ```
 
 [Output]
