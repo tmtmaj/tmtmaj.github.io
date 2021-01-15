@@ -1,0 +1,198 @@
+---
+title: "﻿﻿﻿[Python] ﻿﻿Difference between '==' and 'is'
+layout: post
+author: Jeonghyeok Park
+categories: Python
+tags: Python
+---
+
+﻿
+
+안녕하세요.
+
+
+
+오늘 소개해드릴 내용은 == 와 is입니다. 
+
+
+
+이번에 새로운 논문 관련해서 코드 작성하면서.. ==와 is를 동일 취급하고 무분별하게 사용을 한 대가를 혹독히 받았습니다. 
+
+약 4~5일 간 훈련이 완료된 모델들을 모두 처음부터 다시 훈련해야하는 참담한.. 
+
+
+
+잘못된 부분을 찾고 그 차이를 명확하게 하기 위해 찾아보니 이미 많은 분들이 이 차이에 대해서 포스팅을 했더라구요.. 한 번이라도 봤으면 이렇게 시간을 날리지 않았을 텐데 아쉽습니다.
+
+
+
+반성하고 기억하자는 의미에서 이 포스팅을 작성합니다.
+
+
+
+대부분의 경우, 동일시 취급되어 사용되어도 무방할 수 있으나 그 차이를 아는 것은 중요할 것 같습니다.
+
+------
+
+
+
+> ### ﻿﻿`**is**` operator defines if both the variables point to the same object whereas the `**==**` sign checks if the values for the two variables are the same.﻿
+>
+
+`is` 는 variables point (레퍼런스가 같냐?)
+
+`==` 는 variables (값이 같냐?)
+
+
+
+---
+
+예시를 들어가며 확인해보겠습니다.
+
+
+
+[Code]
+
+```
+list1 = [1,2,3] 
+list2 = [1,2,3] 
+list3=list1 
+  
+if (list1 == list2): 
+   print("True") 
+else: 
+   print("False") 
+
+if (list1 == list3): 
+   print("True") 
+else: 
+   print("False") 
+  
+if (list1 is list2): 
+   print("True") 
+else: 
+   print("False") 
+  
+if (list1 is list3): 
+   print("True") 
+else:     
+   print("False")
+
+print(id(list1), id(list2), id(list3))
+```
+
+[Output]
+
+```
+True
+True
+False
+True
+2193515359944 2193515360136 2193515359944
+```
+
+list1과 list2는 내용물은 같지만, 가르키는 레퍼런스가 다릅니다. 따라서 is를 사용하면 False가 출력됩니다.
+
+
+
+이번엔 list말고 str로 해보겠습니다.
+
+[Code]
+
+```
+str1 = "abc"
+str2 = "abc"
+str3 = str1
+
+if (str1 == str2): 
+   print("True") 
+else: 
+   print("False") 
+
+if (str1 == str3): 
+   print("True") 
+else: 
+   print("False") 
+  
+if (str1 is str2): 
+   print("True") 
+else: 
+   print("False") 
+  
+if (str1 is str3): 
+   print("True") 
+else:     
+   print("False")
+
+print(id(str1), id(str2), id(str3))
+```
+
+[Output]
+
+```
+True
+True
+True
+True
+2193446747304 2193446747304 2193446747304
+```
+
+이 예시에서는 str1과 str2가 같은 레퍼런스를 가르킵니다. (효율을 위해)
+
+
+
+하지만 아래의 예시처럼 문자열의 길이가 길어지면, 
+
+[Code]
+
+```
+str1 = "I love you"
+str2 = "I love you"
+str3 = str1
+
+if (str1 == str2): 
+   print("True") 
+else: 
+   print("False") 
+
+if (str1 == str3): 
+   print("True") 
+else: 
+   print("False") 
+  
+if (str1 is str2): 
+   print("True") 
+else: 
+   print("False") 
+  
+if (str1 is str3): 
+   print("True") 
+else:     
+   print("False")
+
+print(id(str1), id(str2), id(str3))
+```
+
+[Output]
+
+```
+True
+True
+False
+True
+2193514967856 2193515407664 2193514967856
+```
+
+list의 예시와 마찬가지로 str1과 str2가 다른 레퍼런스를 가르킵니다.
+
+
+
+결론적으로 생각없이 사용할 때는 == 를 사용하는 것이 좋은 것 같습니다. python을 주로 사용하게 되면서 C에서 배운 포인터의  개념조차 가물가물하고 주로 value 비교를 해야하는 상황이 많기 때문에 is는 None, True, False인지를 확인할 때  사용하면 될 것 같습니다.
+
+
+
+이번 포스팅은 여기까지입니다.
+
+
+
+감사합니다.
