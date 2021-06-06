@@ -35,7 +35,7 @@ tags: Natural-Language-Processing
 (한국어 기계번역에서 같은 방법을 시도했지만 오히려 성능이 더 떨어졌습니다.
 BERT를 학습할 때 데이터가 부족했을 수도 있고, 한국어에 적합하지 않은 수도 있습니다)
 
---- 
+---
 
 
 ![]({{ site.baseurl }}/assets/sgt1.png )
